@@ -12,40 +12,9 @@ function go(page) {
     document.getElementById(page).classList.add("active");
 }
 
-/* THEME (se lo usi) */
+/* THEME */
 function toggleTheme() {
     document.body.classList.toggle("dark");
-}
-
-/* STORAGE */
-function saveData() {
-    localStorage.setItem("salutelink", JSON.stringify(data));
-}
-
-function loadData() {
-    const saved = localStorage.getItem("salutelink");
-    if (saved) data = JSON.parse(saved);
-}
-
-/* TOAST */
-function showToast(msg) {
-    const t = document.createElement("div");
-    t.textContent = msg;
-
-    t.style.position = "fixed";
-    t.style.bottom = "80px";
-    t.style.left = "50%";
-    t.style.transform = "translateX(-50%)";
-    t.style.background = "#2c7be5";
-    t.style.color = "white";
-    t.style.padding = "10px 14px";
-    t.style.borderRadius = "10px";
-    t.style.fontSize = "13px";
-    t.style.zIndex = "9999";
-
-    document.body.appendChild(t);
-
-    setTimeout(() => t.remove(), 1500);
 }
 
 /* VISITE */
@@ -58,10 +27,8 @@ function addVisit() {
     document.getElementById("visitView").innerText =
         "Ultima visita: " + date;
 
-    saveData();
+    save();
     update();
-
-    showToast("Visita aggiunta ✔");
 }
 
 /* REFERTI */
@@ -72,44 +39,25 @@ function addReport() {
     if (!input.value) return;
 
     data.reports.push({
-        type: type.value,
         name: input.value,
+        type: type.value,
         date: new Date().toLocaleDateString()
     });
 
     renderReports();
-    saveData();
+    save();
     update();
-
-    showToast("Referto aggiunto ✔");
 }
 
 function renderReports() {
     const list = document.getElementById("reportList");
     list.innerHTML = "";
 
-    if (data.reports.length === 0) {
-        list.innerHTML = "<p style='opacity:0.6'>Nessun referto</p>";
-        return;
-    }
-
-    data.reports.forEach((r, index) => {
+    data.reports.forEach(r => {
         const li = document.createElement("li");
-
-        li.innerHTML = `
-            ${r.date} - ${r.type} - ${r.name}
-            <button onclick="deleteReport(${index})">❌</button>
-        `;
-
+        li.textContent = `${r.date} - ${r.type} - ${r.name}`;
         list.appendChild(li);
     });
-}
-
-function deleteReport(index) {
-    data.reports.splice(index, 1);
-    saveData();
-    renderReports();
-    update();
 }
 
 /* FARMACI */
@@ -120,38 +68,29 @@ function addMed() {
     data.meds.push({ name: input.value });
 
     renderMeds();
-    saveData();
+    save();
     update();
-
-    showToast("Farmaco aggiunto ✔");
 }
 
 function renderMeds() {
     const list = document.getElementById("medList");
     list.innerHTML = "";
 
-    if (data.meds.length === 0) {
-        list.innerHTML = "<p style='opacity:0.6'>Nessun farmaco</p>";
-        return;
-    }
-
-    data.meds.forEach((m, index) => {
+    data.meds.forEach(m => {
         const li = document.createElement("li");
-
-        li.innerHTML = `
-            💊 ${m.name}
-            <button onclick="deleteMed(${index})">❌</button>
-        `;
-
+        li.textContent = "💊 " + m.name;
         list.appendChild(li);
     });
 }
 
-function deleteMed(index) {
-    data.meds.splice(index, 1);
-    saveData();
-    renderMeds();
-    update();
+/* STORAGE */
+function save() {
+    localStorage.setItem("salutelink", JSON.stringify(data));
+}
+
+function load() {
+    const saved = localStorage.getItem("salutelink");
+    if (saved) data = JSON.parse(saved);
 }
 
 /* DASHBOARD */
@@ -163,7 +102,7 @@ function update() {
     drawChart();
 }
 
-/* CHART */
+/* GRAFICO */
 function drawChart() {
     if (!window.Chart) return;
 
@@ -191,9 +130,7 @@ function drawChart() {
 
 /* INIT */
 window.onload = function () {
-
-    loadData();
-
+    load();
     renderReports();
     renderMeds();
 
