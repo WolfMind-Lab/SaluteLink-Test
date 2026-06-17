@@ -6,8 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -15,7 +13,7 @@
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Health Journal Pro</p>
+    <p>Health Journal</p>
 </header>
 
 <main>
@@ -24,7 +22,6 @@
 
     <div class="card">
         <h2>📊 Dashboard</h2>
-
         <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
@@ -32,14 +29,6 @@
             <div>Referti<br><b id="refertiCount">0</b></div>
             <div>Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
-    </div>
-
-    <div class="card">
-        <h2>👤 Profilo</h2>
-        <input id="name" placeholder="Nome">
-        <input id="age" type="number" placeholder="Età">
-        <button onclick="saveProfile()">Salva</button>
-        <p id="profileView"></p>
     </div>
 
 </section>
@@ -57,7 +46,7 @@
     <div class="card">
         <h2>📄 Referti</h2>
 
-        <input id="reportInput" placeholder="Referto">
+        <input id="reportInput" placeholder="Nome referto">
 
         <select id="reportType">
             <option>Analisi</option>
@@ -75,7 +64,7 @@
     <div class="card">
         <h2>💊 Farmaci</h2>
 
-        <input id="medInput" placeholder="Farmaco">
+        <input id="medInput" placeholder="Nome farmaco">
         <button onclick="addMed()">Aggiungi</button>
 
         <ul id="medList"></ul>
@@ -92,6 +81,5 @@
 </nav>
 
 <script src="app.js"></script>
-
 </body>
 </html>
