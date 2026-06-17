@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>SaluteLink</title>
-    <p class="subtitle">Health tracker personale</p>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -12,9 +11,16 @@
 <div class="app">
 
     <h1>SaluteLink</h1>
-    <p class="subtitle">Il tuo diario sanitario digitale</p>
+    <p class="subtitle">Health tracker personale</p>
 
-    <!-- 📅 VISITA -->
+    <!-- 📊 DASHBOARD -->
+    <div class="card">
+        <h2>📊 Dashboard</h2>
+        <p>Visite salvate: <span id="countVisite">0</span></p>
+        <p>Referti salvati: <span id="countReferti">0</span></p>
+    </div>
+
+    <!-- 📅 VISITE -->
     <div class="card">
         <h2>📅 Nuova visita</h2>
 
@@ -50,6 +56,8 @@ function aggiungiVisita() {
         "Visita programmata: " + data;
 
     localStorage.setItem("visita", data);
+
+    aggiornaDashboard();
 }
 
 function aggiungiReferto() {
@@ -67,9 +75,18 @@ function aggiungiReferto() {
     );
 
     document.getElementById("refertoInput").value = "";
+
+    aggiornaDashboard();
 }
 
-// 💾 CARICAMENTO DATI SALVATI
+function aggiornaDashboard() {
+    let visite = localStorage.getItem("visita") ? 1 : 0;
+    let referti = document.querySelectorAll("#listaReferti li").length;
+
+    document.getElementById("countVisite").innerText = visite;
+    document.getElementById("countReferti").innerText = referti;
+}
+
 window.onload = function () {
 
     let visita = localStorage.getItem("visita");
@@ -84,6 +101,8 @@ window.onload = function () {
     if (referti) {
         document.getElementById("listaReferti").innerHTML = referti;
     }
+
+    aggiornaDashboard();
 };
 
 </script>
