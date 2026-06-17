@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink PRO</title>
+<title>SaluteLink Health Pro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -13,15 +13,17 @@
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Clinica Digitale PRO</p>
+    <p>Health Pro Dashboard</p>
 </header>
 
 <main>
 
 <!-- DASHBOARD -->
 <section id="home" class="page active">
+
     <div class="card">
-        <h2>📊 Dashboard</h2>
+        <h2>📊 Stato Salute</h2>
+
         <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
@@ -32,58 +34,82 @@
     </div>
 
     <div class="card">
-        <h3>📅 Timeline</h3>
+        <h3>📌 Timeline Clinica</h3>
         <div id="timeline"></div>
     </div>
+
 </section>
 
-<!-- VISITE + CALENDARIO -->
+<!-- VISITE -->
 <section id="visite" class="page">
+
     <div class="card">
-        <h2>📅 Calendario Visite</h2>
-
-        <div class="calendar-header">
-            <button onclick="prevMonth()">⬅</button>
-            <h3 id="monthLabel"></h3>
-            <button onclick="nextMonth()">➡</button>
-        </div>
-
-        <div id="calendar"></div>
+        <h2>📅 Visite</h2>
 
         <input id="visitNote" placeholder="Nota visita">
+
+        <select id="visitType">
+            <option>Controllo</option>
+            <option>Specialistica</option>
+            <option>Esami</option>
+            <option>Emergenza</option>
+        </select>
+
+        <select id="visitTime">
+            <option>Mattina</option>
+            <option>Pomeriggio</option>
+            <option>Sera</option>
+        </select>
+
         <button onclick="addVisit()">Aggiungi visita</button>
 
         <div id="visitList"></div>
     </div>
+
+</section>
+
+<!-- FARMACI -->
+<section id="farmaci" class="page">
+
+    <div class="card">
+        <h2>💊 Farmaci</h2>
+
+        <input id="medName" placeholder="Nome farmaco">
+
+        <select id="medDose">
+            <option>250mg</option>
+            <option>500mg</option>
+            <option>1000mg</option>
+        </select>
+
+        <select id="medTime">
+            <option>Mattina</option>
+            <option>Pranzo</option>
+            <option>Sera</option>
+            <option>Notte</option>
+        </select>
+
+        <button onclick="addMed()">Aggiungi farmaco</button>
+
+        <div id="medList"></div>
+    </div>
+
 </section>
 
 <!-- REFERTI -->
 <section id="referti" class="page">
+
     <div class="card">
         <h2>📄 Referti</h2>
 
         <input id="reportName" placeholder="Nome referto">
         <input id="reportDesc" placeholder="Descrizione">
 
-        <button onclick="addReport()">Aggiungi</button>
+        <button onclick="addReport()">Aggiungi referto</button>
 
         <div id="reportList"></div>
     </div>
-</section>
 
-<!-- FARMACI -->
-<section id="farmaci" class="page">
-    <div class="card">
-        <h2>💊 Farmaci</h2>
-
-        <input id="medName" placeholder="Nome">
-        <input id="medDose" placeholder="Dose">
-        <input id="medTime" placeholder="Orario">
-
-        <button onclick="addMed()">Aggiungi</button>
-
-        <div id="medList"></div>
-    </div>
 </section>
 
 </main>
@@ -91,10 +117,11 @@
 <nav>
     <button onclick="go('home')">🏠</button>
     <button onclick="go('visite')">📅</button>
-    <button onclick="go('referti')">📄</button>
     <button onclick="go('farmaci')">💊</button>
+    <button onclick="go('referti')">📄</button>
 </nav>
 
 <script src="app.js"></script>
+
 </body>
 </html>
