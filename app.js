@@ -5,38 +5,81 @@ let data = {
 };
 
 let chart;
+let currentDate = new Date();
+let selectedDate = null;
 
 /* NAV */
 function go(page) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
+
+    if (page === "visite") renderCalendar();
 }
 
-/* SEARCH */
-function searchAll() {
-    const q = document.getElementById("search").value.toLowerCase();
+/* CALENDARIO */
+function renderCalendar() {
+    const calendar = document.getElementById("calendar");
+    const monthLabel = document.getElementById("monthLabel");
 
-    const all = [
-        ...data.visits.map(v => "visita " + v.note),
-        ...data.reports.map(r => r.name + " " + r.desc),
-        ...data.meds.map(m => m.name)
-    ];
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
 
-    const results = all.filter(x => x.toLowerCase().includes(q));
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    document.getElementById("timeline").innerHTML =
-        results.map(r => `<div class="item">🔎 ${r}</div>`).join("");
+    monthLabel.innerText =
+        currentDate.toLocaleString("it-IT", { month: "long", year: "numeric" });
+
+    calendar.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+        calendar.innerHTML += `<div></div>`;
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${month + 1}-${d}`;
+
+        const hasEvent = data.visits.some(v => v.date === dateStr);
+
+        calendar.innerHTML += `
+            <div class="day ${hasEvent ? "hasEvent" : ""}"
+                 onclick="selectDate('${dateStr}')">
+                ${d}
+            </div>
+        `;
+    }
+}
+
+function selectDate(date) {
+    selectedDate = date;
+    document.getElementById("selectedDateLabel").innerText =
+        "Data: " + date;
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+}
+
+function prevMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
 }
 
 /* VISITE */
-function addVisit() {
+function addVisitFromCalendar() {
+    if (!selectedDate) return;
+
+    const note = document.getElementById("visitNote").value;
+
     data.visits.push({
-        date: visitDate.value,
-        note: visitNote.value
+        date: selectedDate,
+        note: note || "Visita"
     });
 
     save();
     renderAll();
+    renderCalendar();
 }
 
 /* REFERTI */
@@ -63,11 +106,14 @@ function addMed() {
     renderAll();
 }
 
-/* DELETE GENERICO */
-function remove(type, index) {
-    data[type].splice(index, 1);
-    save();
-    renderAll();
+/* STORAGE */
+function save() {
+    localStorage.setItem("salutelink", JSON.stringify(data));
+}
+
+function load() {
+    const saved = localStorage.getItem("salutelink");
+    if (saved) data = JSON.parse(saved);
 }
 
 /* RENDER */
@@ -76,23 +122,17 @@ function renderAll() {
     refertiCount.innerText = data.reports.length;
     farmaciCount.innerText = data.meds.length;
 
-    visitList.innerHTML = data.visits.map((v,i)=>
-        `<div class="item">📅 ${v.date} - ${v.note} <button onclick="remove('visits',${i})">❌</button></div>`
+    visitList.innerHTML = data.visits.map(v =>
+        `<div>📅 ${v.date} - ${v.note}</div>`
     ).join("");
 
-    reportList.innerHTML = data.reports.map((r,i)=>
-        `<div class="item">📄 ${r.name} (${r.type}) - ${r.desc} <button onclick="remove('reports',${i})">❌</button></div>`
+    reportList.innerHTML = data.reports.map(r =>
+        `<div>📄 ${r.name}</div>`
     ).join("");
 
-    medList.innerHTML = data.meds.map((m,i)=>
-        `<div class="item">💊 ${m.name} - ${m.dose} - ${m.time} <button onclick="remove('meds',${i})">❌</button></div>`
+    medList.innerHTML = data.meds.map(m =>
+        `<div>💊 ${m.name}</div>`
     ).join("");
-
-    timeline.innerHTML = [
-        ...data.visits.map(v => `📅 ${v.date} - ${v.note}`),
-        ...data.reports.map(r => `📄 ${r.name}`),
-        ...data.meds.map(m => `💊 ${m.name}`)
-    ].map(x => `<div class="item">${x}</div>`).join("");
 
     drawChart();
 }
@@ -121,8 +161,6 @@ function drawChart() {
 
 /* INIT */
 window.onload = function () {
-    const saved = localStorage.getItem("salutelink");
-    if (saved) data = JSON.parse(saved);
-
+    load();
     renderAll();
 };
