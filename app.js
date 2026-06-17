@@ -8,19 +8,16 @@ let chart;
 
 /* NAV */
 function go(page) {
-
-    document.querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
-
-    document.querySelectorAll("nav button")
-        .forEach(b => b.classList.remove("active"));
-
-    event.target.classList.add("active");
 }
 
-/* SALVATAGGIO */
+/* THEME */
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+}
+
+/* STORAGE */
 function saveData() {
     localStorage.setItem("salutelink", JSON.stringify(data));
 }
@@ -98,7 +95,6 @@ function renderMeds() {
 
 /* DASHBOARD */
 function update() {
-
     document.getElementById("visiteCount").innerText = data.visits.length;
     document.getElementById("refertiCount").innerText = data.reports.length;
     document.getElementById("farmaciCount").innerText = data.meds.length;
@@ -106,9 +102,8 @@ function update() {
     drawChart();
 }
 
-/* GRAFICO */
+/* CHART */
 function drawChart() {
-
     if (!window.Chart) return;
 
     const ctx = document.getElementById("chart");
@@ -147,4 +142,9 @@ window.onload = function () {
     }
 
     update();
+
+    setTimeout(() => {
+        const splash = document.getElementById("splashScreen");
+        if (splash) splash.remove();
+    }, 1800);
 };
