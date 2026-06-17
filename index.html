@@ -23,6 +23,7 @@
 
 <main>
 
+<!-- DASHBOARD -->
 <section id="home" class="page active">
     <div class="card">
         <h2>📊 Dashboard</h2>
@@ -39,15 +40,21 @@
     </div>
 </section>
 
+<!-- VISITE -->
 <section id="visite" class="page">
     <div class="card">
         <h2>📅 Visite</h2>
+
         <input type="date" id="visitDate">
+        <input type="text" id="visitNote" placeholder="Nota visita">
+
         <button onclick="addVisit()">Aggiungi visita</button>
-        <p id="visitView"></p>
+
+        <div id="visitView"></div>
     </div>
 </section>
 
+<!-- REFERTI -->
 <section id="referti" class="page">
     <div class="card">
         <h2>📄 Referti</h2>
@@ -60,17 +67,23 @@
             <option>Radiologia</option>
         </select>
 
+        <input id="reportDesc" placeholder="Descrizione">
+
         <button onclick="addReport()">Aggiungi</button>
 
         <ul id="reportList"></ul>
     </div>
 </section>
 
+<!-- FARMACI -->
 <section id="farmaci" class="page">
     <div class="card">
         <h2>💊 Farmaci</h2>
 
         <input id="medInput" placeholder="Nome farmaco">
+        <input id="medDose" placeholder="Dose (es: 500mg)">
+        <input id="medTime" placeholder="Orario (mattina/sera)">
+
         <button onclick="addMed()">Aggiungi</button>
 
         <ul id="medList"></ul>
