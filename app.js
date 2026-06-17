@@ -5,90 +5,93 @@ function go(page) {
 
 /* PROFILO */
 function saveProfile() {
-    let name = document.getElementById("name").value;
-    let age = document.getElementById("age").value;
+    localStorage.setItem("name", name.value);
+    localStorage.setItem("age", age.value);
 
-    localStorage.setItem("name", name);
-    localStorage.setItem("age", age);
-
-    document.getElementById("profileView").innerText =
-        name + " - " + age + " anni";
+    profileView.innerText = name.value + " - " + age.value + " anni";
 }
 
 /* VISITE */
 function addVisit() {
-    let date = document.getElementById("visitDate").value;
+    let date = visitDate.value;
     if (!date) return;
 
     localStorage.setItem("visit", date);
-    document.getElementById("visitView").innerText = "Visita: " + date;
+    visitView.innerText = "Visita: " + date;
+
+    notify("Visita programmata: " + date);
 
     update();
 }
 
 /* REFERTI */
 function addReport() {
-    let text = document.getElementById("reportInput").value;
-    let type = document.getElementById("reportType").value;
-
-    if (!text) return;
+    if (!reportInput.value) return;
 
     let li = document.createElement("li");
-    li.textContent = type + " - " + text;
+    li.textContent = reportType.value + " - " + reportInput.value;
 
-    document.getElementById("reportList").appendChild(li);
+    reportList.appendChild(li);
 
-    localStorage.setItem("reports", document.getElementById("reportList").innerHTML);
+    save("reports", reportList);
 
     update();
 }
 
 /* FARMACI */
 function addMed() {
-    let text = document.getElementById("medInput").value;
-    if (!text) return;
+    if (!medInput.value) return;
 
     let li = document.createElement("li");
-    li.textContent = text;
+    li.textContent = medInput.value;
 
-    document.getElementById("medList").appendChild(li);
+    medList.appendChild(li);
 
-    localStorage.setItem("meds", document.getElementById("medList").innerHTML);
+    save("meds", medList);
 
     update();
 }
 
-/* DASHBOARD */
+/* STORAGE */
+function save(key, el) {
+    localStorage.setItem(key, el.innerHTML);
+}
+
+/* NOTIFICHE (PRO FEATURE) */
+function notify(text) {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(p => {
+            if (p === "granted") {
+                new Notification("SaluteLink", { body: text });
+            }
+        });
+    }
+}
+
+/* UPDATE DASHBOARD */
 function update() {
-    document.getElementById("countVisits").innerText =
-        localStorage.getItem("visit") ? 1 : 0;
 
-    document.getElementById("countReports").innerText =
-        document.querySelectorAll("#reportList li").length;
-
-    document.getElementById("countMeds").innerText =
-        document.querySelectorAll("#medList li").length;
+    visiteCount.innerText = localStorage.getItem("visit") ? 1 : 0;
+    refertiCount.innerText = reportList.children.length;
+    farmaciCount.innerText = medList.children.length;
 }
 
 /* LOAD */
 window.onload = function () {
 
-    let name = localStorage.getItem("name");
-    let age = localStorage.getItem("age");
-
-    if (name) {
-        document.getElementById("profileView").innerText =
-            name + " - " + age + " anni";
+    if (localStorage.getItem("name")) {
+        profileView.innerText =
+            localStorage.getItem("name") +
+            " - " +
+            localStorage.getItem("age") +
+            " anni";
     }
 
-    document.getElementById("visitView").innerText =
+    visitView.innerText =
         "Visita: " + (localStorage.getItem("visit") || "nessuna");
 
-    document.getElementById("reportList").innerHTML =
-        localStorage.getItem("reports") || "";
-
-    document.getElementById("medList").innerHTML =
-        localStorage.getItem("meds") || "";
+    reportList.innerHTML = localStorage.getItem("reports") || "";
+    medList.innerHTML = localStorage.getItem("meds") || "";
 
     update();
 };
