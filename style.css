@@ -29,6 +29,12 @@ h1 {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
 button {
     padding: 10px;
     margin: 5px 0;
@@ -37,4 +43,8 @@ button {
     border-radius: 10px;
     background: #2c7be5;
     color: white;
+}
+
+ul {
+    padding-left: 20px;
 }
