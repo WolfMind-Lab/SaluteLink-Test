@@ -13,44 +13,68 @@
     <h1>SaluteLink</h1>
     <p class="subtitle">Health tracker personale</p>
 
-    <!-- 📊 DASHBOARD -->
-    <div class="card">
-        <h2>📊 Dashboard</h2>
-        <p>Visite salvate: <span id="countVisite">0</span></p>
-        <p>Referti salvati: <span id="countReferti">0</span></p>
+    <!-- 📊 HOME -->
+    <div id="home" class="page active">
+
+        <div class="card">
+            <h2>📊 Dashboard</h2>
+            <p>Visite salvate: <span id="countVisite">0</span></p>
+            <p>Referti salvati: <span id="countReferti">0</span></p>
+        </div>
+
     </div>
 
     <!-- 📅 VISITE -->
-    <div class="card">
-        <h2>📅 Nuova visita</h2>
+    <div id="visite" class="page">
 
-        <input type="date" id="dataVisita">
-        <button onclick="aggiungiVisita()">Aggiungi visita</button>
+        <div class="card">
+            <h2>📅 Nuova visita</h2>
 
-        <p id="today">Nessuna visita programmata</p>
+            <input type="date" id="dataVisita">
+            <button onclick="aggiungiVisita()">Aggiungi visita</button>
+
+            <p id="today">Nessuna visita programmata</p>
+        </div>
+
     </div>
 
     <!-- 📄 REFERTI -->
-    <div class="card">
-        <h2>📄 Referti</h2>
+    <div id="referti" class="page">
 
-        <input type="text" id="refertoInput" placeholder="Nome referto">
-        <button onclick="aggiungiReferto()">Aggiungi referto</button>
+        <div class="card">
+            <h2>📄 Referti</h2>
 
-        <ul id="listaReferti"></ul>
+            <input type="text" id="refertoInput" placeholder="Nome referto">
+            <button onclick="aggiungiReferto()">Aggiungi referto</button>
+
+            <ul id="listaReferti"></ul>
+        </div>
+
     </div>
 
 </div>
 
+<!-- 📱 NAV BAR -->
+<div class="navbar">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('visite')">Visite</button>
+    <button onclick="showPage('referti')">Referti</button>
+</div>
+
 <script>
+
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(p => {
+        p.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+}
 
 function aggiungiVisita() {
     let data = document.getElementById("dataVisita").value;
 
-    if (!data) {
-        alert("Seleziona una data");
-        return;
-    }
+    if (!data) return;
 
     document.getElementById("today").innerText =
         "Visita programmata: " + data;
