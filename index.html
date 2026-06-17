@@ -13,13 +13,30 @@
     <h1>SaluteLink</h1>
     <p class="subtitle">Health tracker personale</p>
 
-    <!-- 📊 HOME -->
+    <!-- 🏠 HOME -->
     <div id="home" class="page active">
 
+        <!-- 👤 PROFILO -->
+        <div class="card">
+            <h2>👤 Profilo</h2>
+            <input id="nomeUtente" placeholder="Nome">
+            <input id="etaUtente" type="number" placeholder="Età">
+            <button onclick="salvaProfilo()">Salva profilo</button>
+            <p id="profiloInfo"></p>
+        </div>
+
+        <!-- 📊 DASHBOARD -->
         <div class="card">
             <h2>📊 Dashboard</h2>
-            <p>Visite salvate: <span id="countVisite">0</span></p>
-            <p>Referti salvati: <span id="countReferti">0</span></p>
+            <p>Visite: <span id="countVisite">0</span></p>
+            <p>Referti: <span id="countReferti">0</span></p>
+            <p>Farmaci: <span id="countFarmaci">0</span></p>
+        </div>
+
+        <!-- 📈 GRAFICO SEMPLICE -->
+        <div class="card">
+            <h2>📈 Attività salute</h2>
+            <div id="barChart"></div>
         </div>
 
     </div>
@@ -44,7 +61,13 @@
         <div class="card">
             <h2>📄 Referti</h2>
 
-            <input type="text" id="refertoInput" placeholder="Nome referto">
+            <input id="refertoInput" placeholder="Nome referto">
+            <select id="categoriaReferto">
+                <option>Analisi</option>
+                <option>Visita</option>
+                <option>Radiografia</option>
+            </select>
+
             <button onclick="aggiungiReferto()">Aggiungi referto</button>
 
             <ul id="listaReferti"></ul>
@@ -52,81 +75,138 @@
 
     </div>
 
+    <!-- 💊 FARMACI -->
+    <div id="farmaci" class="page">
+
+        <div class="card">
+            <h2>💊 Farmaci / Promemoria</h2>
+
+            <input id="farmacoInput" placeholder="Nome farmaco">
+            <button onclick="aggiungiFarmaco()">Aggiungi</button>
+
+            <ul id="listaFarmaci"></ul>
+        </div>
+
+    </div>
+
 </div>
 
-<!-- 📱 NAV BAR -->
+<!-- 📱 NAV -->
 <div class="navbar">
     <button onclick="showPage('home')">Home</button>
     <button onclick="showPage('visite')">Visite</button>
     <button onclick="showPage('referti')">Referti</button>
+    <button onclick="showPage('farmaci')">Farmaci</button>
 </div>
 
 <script>
 
 function showPage(page) {
-    document.querySelectorAll(".page").forEach(p => {
-        p.classList.remove("active");
-    });
-
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
 }
 
-function aggiungiVisita() {
-    let data = document.getElementById("dataVisita").value;
+/* 👤 PROFILO */
+function salvaProfilo() {
+    let nome = document.getElementById("nomeUtente").value;
+    let eta = document.getElementById("etaUtente").value;
 
-    if (!data) return;
+    localStorage.setItem("nome", nome);
+    localStorage.setItem("eta", eta);
 
-    document.getElementById("today").innerText =
-        "Visita programmata: " + data;
-
-    localStorage.setItem("visita", data);
-
-    aggiornaDashboard();
+    document.getElementById("profiloInfo").innerText =
+        nome + " - " + eta + " anni";
 }
 
+/* 📅 VISITE */
+function aggiungiVisita() {
+    let data = document.getElementById("dataVisita").value;
+    if (!data) return;
+
+    localStorage.setItem("visita", data);
+    document.getElementById("today").innerText = "Visita: " + data;
+    aggiorna();
+}
+
+/* 📄 REFERTI */
 function aggiungiReferto() {
     let testo = document.getElementById("refertoInput").value;
+    let cat = document.getElementById("categoriaReferto").value;
 
+    if (!testo) return;
+
+    let li = document.createElement("li");
+    li.textContent = cat + " - " + testo;
+
+    document.getElementById("listaReferti").appendChild(li);
+
+    salvaLista("referti", "listaReferti");
+    aggiorna();
+}
+
+/* 💊 FARMACI */
+function aggiungiFarmaco() {
+    let testo = document.getElementById("farmacoInput").value;
     if (!testo) return;
 
     let li = document.createElement("li");
     li.textContent = testo;
 
-    document.getElementById("listaReferti").appendChild(li);
+    document.getElementById("listaFarmaci").appendChild(li);
 
-    localStorage.setItem("referti",
-        document.getElementById("listaReferti").innerHTML
-    );
-
-    document.getElementById("refertoInput").value = "";
-
-    aggiornaDashboard();
+    salvaLista("farmaci", "listaFarmaci");
+    aggiorna();
 }
 
-function aggiornaDashboard() {
-    let visite = localStorage.getItem("visita") ? 1 : 0;
-    let referti = document.querySelectorAll("#listaReferti li").length;
-
-    document.getElementById("countVisite").innerText = visite;
-    document.getElementById("countReferti").innerText = referti;
+/* 💾 SALVATAGGIO LISTE */
+function salvaLista(key, id) {
+    localStorage.setItem(key, document.getElementById(id).innerHTML);
 }
 
+/* 📊 DASHBOARD */
+function aggiorna() {
+    document.getElementById("countVisite").innerText =
+        localStorage.getItem("visita") ? 1 : 0;
+
+    document.getElementById("countReferti").innerText =
+        document.querySelectorAll("#listaReferti li").length;
+
+    document.getElementById("countFarmaci").innerText =
+        document.querySelectorAll("#listaFarmaci li").length;
+
+    grafico();
+}
+
+/* 📈 GRAFICO SEMPLICE */
+function grafico() {
+    let v = document.querySelectorAll("#listaReferti li").length;
+    let f = document.querySelectorAll("#listaFarmaci li").length;
+
+    document.getElementById("barChart").innerHTML =
+        "Referti: " + "█".repeat(v) + "<br>Farmaci: " + "█".repeat(f);
+}
+
+/* 🚀 LOAD */
 window.onload = function () {
 
-    let visita = localStorage.getItem("visita");
+    document.getElementById("today").innerText =
+        "Visita: " + (localStorage.getItem("visita") || "nessuna");
 
-    if (visita) {
-        document.getElementById("today").innerText =
-            "Visita programmata: " + visita;
+    document.getElementById("listaReferti").innerHTML =
+        localStorage.getItem("referti") || "";
+
+    document.getElementById("listaFarmaci").innerHTML =
+        localStorage.getItem("farmaci") || "";
+
+    let nome = localStorage.getItem("nome");
+    let eta = localStorage.getItem("eta");
+
+    if (nome) {
+        document.getElementById("profiloInfo").innerText =
+            nome + " - " + eta + " anni";
     }
 
-    let referti = localStorage.getItem("referti");
-
-    if (referti) {
-        document.getElementById("listaReferti").innerHTML = referti;
-    }
-
-    aggiornaDashboard();
+    aggiorna();
 };
 
 </script>
