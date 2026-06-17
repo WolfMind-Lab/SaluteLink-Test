@@ -8,8 +8,16 @@ let chart;
 
 /* NAV */
 function go(page) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+    document.querySelectorAll(".page")
+        .forEach(p => p.classList.remove("active"));
+
     document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll("nav button")
+        .forEach(b => b.classList.remove("active"));
+
+    event.target.classList.add("active");
 }
 
 /* SALVATAGGIO */
