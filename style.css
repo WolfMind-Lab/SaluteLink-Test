@@ -21,6 +21,13 @@ body.dark nav {
     background: rgba(15,23,42,0.9);
 }
 
+body.dark input,
+body.dark select {
+    background: rgba(255,255,255,0.08);
+    color: #e5e7eb;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
 /* SPLASH */
 #splashScreen {
     position: fixed;
@@ -66,6 +73,11 @@ main {
     margin-bottom: 16px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    transition: 0.2s ease;
+}
+
+.card:active {
+    transform: scale(0.99);
 }
 
 /* INPUT */
@@ -75,6 +87,13 @@ input, select {
     margin-top: 8px;
     border-radius: 12px;
     border: 1px solid #e5e7eb;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #2c7be5;
+    box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
 }
 
 /* BUTTON */
@@ -86,6 +105,24 @@ button {
     border-radius: 12px;
     background: #2c7be5;
     color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+}
+
+/* DELETE BUTTON (IMPORTANTISSIMO UX) */
+li button {
+    width: auto;
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #ff4d4f;
+    border-radius: 8px;
+    margin-left: 10px;
 }
 
 /* GRID */
@@ -95,6 +132,27 @@ button {
     gap: 10px;
     text-align: center;
     margin-top: 14px;
+}
+
+.grid div {
+    background: #f6f9ff;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+/* LISTE */
+ul {
+    padding-left: 18px;
+    margin-top: 10px;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 6px 0;
 }
 
 /* NAV */
@@ -115,6 +173,7 @@ nav button {
     color: #2c7be5;
     font-weight: 600;
     padding: 14px;
+    transition: 0.2s;
 }
 
 /* PAGE */
