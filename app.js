@@ -12,7 +12,7 @@ function go(page) {
     document.getElementById(page).classList.add("active");
 }
 
-/* THEME */
+/* THEME (se lo usi) */
 function toggleTheme() {
     document.body.classList.toggle("dark");
 }
@@ -27,6 +27,27 @@ function loadData() {
     if (saved) data = JSON.parse(saved);
 }
 
+/* TOAST */
+function showToast(msg) {
+    const t = document.createElement("div");
+    t.textContent = msg;
+
+    t.style.position = "fixed";
+    t.style.bottom = "80px";
+    t.style.left = "50%";
+    t.style.transform = "translateX(-50%)";
+    t.style.background = "#2c7be5";
+    t.style.color = "white";
+    t.style.padding = "10px 14px";
+    t.style.borderRadius = "10px";
+    t.style.fontSize = "13px";
+    t.style.zIndex = "9999";
+
+    document.body.appendChild(t);
+
+    setTimeout(() => t.remove(), 1500);
+}
+
 /* VISITE */
 function addVisit() {
     const date = document.getElementById("visitDate").value;
@@ -39,6 +60,8 @@ function addVisit() {
 
     saveData();
     update();
+
+    showToast("Visita aggiunta ✔");
 }
 
 /* REFERTI */
@@ -57,17 +80,36 @@ function addReport() {
     renderReports();
     saveData();
     update();
+
+    showToast("Referto aggiunto ✔");
 }
 
 function renderReports() {
     const list = document.getElementById("reportList");
     list.innerHTML = "";
 
-    data.reports.forEach(r => {
+    if (data.reports.length === 0) {
+        list.innerHTML = "<p style='opacity:0.6'>Nessun referto</p>";
+        return;
+    }
+
+    data.reports.forEach((r, index) => {
         const li = document.createElement("li");
-        li.textContent = `${r.date} - ${r.type} - ${r.name}`;
+
+        li.innerHTML = `
+            ${r.date} - ${r.type} - ${r.name}
+            <button onclick="deleteReport(${index})">❌</button>
+        `;
+
         list.appendChild(li);
     });
+}
+
+function deleteReport(index) {
+    data.reports.splice(index, 1);
+    saveData();
+    renderReports();
+    update();
 }
 
 /* FARMACI */
@@ -80,17 +122,36 @@ function addMed() {
     renderMeds();
     saveData();
     update();
+
+    showToast("Farmaco aggiunto ✔");
 }
 
 function renderMeds() {
     const list = document.getElementById("medList");
     list.innerHTML = "";
 
-    data.meds.forEach(m => {
+    if (data.meds.length === 0) {
+        list.innerHTML = "<p style='opacity:0.6'>Nessun farmaco</p>";
+        return;
+    }
+
+    data.meds.forEach((m, index) => {
         const li = document.createElement("li");
-        li.textContent = "💊 " + m.name;
+
+        li.innerHTML = `
+            💊 ${m.name}
+            <button onclick="deleteMed(${index})">❌</button>
+        `;
+
         list.appendChild(li);
     });
+}
+
+function deleteMed(index) {
+    data.meds.splice(index, 1);
+    saveData();
+    renderMeds();
+    update();
 }
 
 /* DASHBOARD */
