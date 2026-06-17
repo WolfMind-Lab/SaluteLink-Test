@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: -apple-system, Arial;
     background: #eef2f9;
     color: #111;
 }
@@ -13,7 +13,7 @@ header {
 }
 
 main {
-    max-width: 450px;
+    max-width: 460px;
     margin: auto;
     padding: 12px;
     padding-bottom: 90px;
@@ -25,6 +25,10 @@ main {
     margin-bottom: 14px;
     border-radius: 14px;
     box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.card-inner {
+    margin-top: 10px;
 }
 
 input, textarea {
@@ -45,17 +49,32 @@ button {
     color: white;
 }
 
-/* NAV */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.box {
+    background: #f4f6fb;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 nav {
     position: fixed;
     bottom: 0;
     width: 100%;
     display: flex;
     background: white;
+    border-top: 1px solid #ddd;
 }
 
 nav button {
     flex: 1;
+    background: none;
+    color: #2c7be5;
 }
 
 /* CALENDAR */
@@ -75,11 +94,11 @@ nav button {
 .day {
     text-align: center;
     padding: 8px;
-    background: #f4f6fb;
     border-radius: 8px;
-    cursor: pointer;
+    background: #f4f6fb;
 }
 
 .day.hasEvent {
-    border: 2px solid #2c7be5;
+    background: #2c7be5;
+    color: white;
 }
