@@ -17,11 +17,11 @@ function go(page) {
 
 /* STORAGE */
 function save() {
-    localStorage.setItem("health_v2", JSON.stringify(data));
+    localStorage.setItem("salutelink_pro", JSON.stringify(data));
 }
 
 function load() {
-    const d = localStorage.getItem("health_v2");
+    const d = localStorage.getItem("salutelink_pro");
     if (d) data = JSON.parse(d);
 }
 
@@ -34,7 +34,7 @@ function renderCalendar() {
     const y = currentDate.getFullYear();
     const m = currentDate.getMonth();
 
-    const firstDay = new Date(y, m, 1).getDay();
+    const first = new Date(y, m, 1).getDay();
     const days = new Date(y, m + 1, 0).getDate();
 
     label.innerText = currentDate.toLocaleString("it-IT", {
@@ -44,9 +44,7 @@ function renderCalendar() {
 
     cal.innerHTML = "";
 
-    for (let i = 0; i < firstDay; i++) {
-        cal.innerHTML += "<div></div>";
-    }
+    for (let i = 0; i < first; i++) cal.innerHTML += "<div></div>";
 
     for (let d = 1; d <= days; d++) {
 
@@ -56,15 +54,11 @@ function renderCalendar() {
 
         cal.innerHTML += `
             <div class="day ${has ? "hasEvent" : ""}"
-            onclick="selectDate('${date}')">
+            onclick="selectedDate='${date}'">
                 ${d}
             </div>
         `;
     }
-}
-
-function selectDate(date) {
-    selectedDate = date;
 }
 
 /* VISITE */
@@ -126,22 +120,22 @@ function renderAll() {
     farmaciCount.innerText = data.meds.length;
 
     visitList.innerHTML = data.visits.map(v =>
-        `📅 ${v.date} - ${v.time} - ${v.note}`
+        `<div class="card">📅 ${v.date} ${v.time}<br>${v.note}</div>`
     ).join("");
 
     reportList.innerHTML = data.reports.map(r =>
-        `📄 <b>${r.name}</b><br>${r.desc}`
-    ).join("<br><br>");
+        `<div class="card">📄 ${r.name}<br>${r.desc}</div>`
+    ).join("");
 
     medList.innerHTML = data.meds.map(m =>
-        `💊 ${m.name} - ${m.dose} - ${m.time}`
-    ).join("<br>");
+        `<div class="card">💊 ${m.name} - ${m.dose} - ${m.time}</div>`
+    ).join("");
 
     timeline.innerHTML = [
-        ...data.visits.map(v => `📅 ${v.date} ${v.time}`),
+        ...data.visits.map(v => `📅 ${v.date}`),
         ...data.reports.map(r => `📄 ${r.name}`),
         ...data.meds.map(m => `💊 ${m.name}`)
-    ].map(x => `<div>${x}</div>`).join("");
+    ].map(x => `<div class="card">${x}</div>`).join("");
 }
 
 /* INIT */
