@@ -4,9 +4,8 @@ let data = {
     meds: []
 };
 
-let chart;
 let currentDate = new Date();
-let selectedDate = null;
+let chart;
 
 /* NAV */
 function go(page) {
@@ -16,44 +15,99 @@ function go(page) {
     if (page === "visite") renderCalendar();
 }
 
-/* CALENDARIO */
+/* SAVE */
+function save() {
+    localStorage.setItem("salutelink", JSON.stringify(data));
+}
+
+function load() {
+    const d = localStorage.getItem("salutelink");
+    if (d) data = JSON.parse(d);
+}
+
+/* VISITE */
+function addVisit() {
+    data.visits.push({
+        date: selectedDate || today(),
+        note: visitNote.value
+    });
+
+    visitNote.value = "";
+    save();
+    renderAll();
+    renderCalendar();
+}
+
+/* REFERTI */
+function addReport() {
+    data.reports.push({
+        name: reportName.value,
+        desc: reportDesc.value
+    });
+
+    reportName.value = "";
+    reportDesc.value = "";
+
+    save();
+    renderAll();
+}
+
+/* FARMACI */
+function addMed() {
+    data.meds.push({
+        name: medName.value,
+        dose: medDose.value,
+        time: medTime.value
+    });
+
+    medName.value = "";
+    medDose.value = "";
+    medTime.value = "";
+
+    save();
+    renderAll();
+}
+
+/* DELETE (CRUD) */
+function remove(type, index) {
+    data[type].splice(index, 1);
+    save();
+    renderAll();
+}
+
+/* CALENDAR */
+let selectedDate = null;
+
 function renderCalendar() {
-    const calendar = document.getElementById("calendar");
-    const monthLabel = document.getElementById("monthLabel");
+    const cal = document.getElementById("calendar");
+    const label = document.getElementById("monthLabel");
 
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
+    const y = currentDate.getFullYear();
+    const m = currentDate.getMonth();
 
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const first = new Date(y, m, 1).getDay();
+    const days = new Date(y, m + 1, 0).getDate();
 
-    monthLabel.innerText =
-        currentDate.toLocaleString("it-IT", { month: "long", year: "numeric" });
+    label.innerText = currentDate.toLocaleString("it-IT", {
+        month: "long",
+        year: "numeric"
+    });
 
-    calendar.innerHTML = "";
+    cal.innerHTML = "";
 
-    for (let i = 0; i < firstDay; i++) {
-        calendar.innerHTML += `<div></div>`;
-    }
+    for (let i = 0; i < first; i++) cal.innerHTML += "<div></div>";
 
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = `${year}-${month + 1}-${d}`;
+    for (let d = 1; d <= days; d++) {
+        const date = `${y}-${m + 1}-${d}`;
+        const has = data.visits.some(v => v.date === date);
 
-        const hasEvent = data.visits.some(v => v.date === dateStr);
-
-        calendar.innerHTML += `
-            <div class="day ${hasEvent ? "hasEvent" : ""}"
-                 onclick="selectDate('${dateStr}')">
+        cal.innerHTML += `
+            <div class="day ${has ? "has" : ""}"
+            onclick="selectedDate='${date}'">
                 ${d}
             </div>
         `;
     }
-}
-
-function selectDate(date) {
-    selectedDate = date;
-    document.getElementById("selectedDateLabel").innerText =
-        "Data: " + date;
 }
 
 function nextMonth() {
@@ -66,73 +120,30 @@ function prevMonth() {
     renderCalendar();
 }
 
-/* VISITE */
-function addVisitFromCalendar() {
-    if (!selectedDate) return;
-
-    const note = document.getElementById("visitNote").value;
-
-    data.visits.push({
-        date: selectedDate,
-        note: note || "Visita"
-    });
-
-    save();
-    renderAll();
-    renderCalendar();
-}
-
-/* REFERTI */
-function addReport() {
-    data.reports.push({
-        name: reportInput.value,
-        type: reportType.value,
-        desc: reportDesc.value
-    });
-
-    save();
-    renderAll();
-}
-
-/* FARMACI */
-function addMed() {
-    data.meds.push({
-        name: medInput.value,
-        dose: medDose.value,
-        time: medTime.value
-    });
-
-    save();
-    renderAll();
-}
-
-/* STORAGE */
-function save() {
-    localStorage.setItem("salutelink", JSON.stringify(data));
-}
-
-function load() {
-    const saved = localStorage.getItem("salutelink");
-    if (saved) data = JSON.parse(saved);
-}
-
 /* RENDER */
 function renderAll() {
+
     visiteCount.innerText = data.visits.length;
     refertiCount.innerText = data.reports.length;
     farmaciCount.innerText = data.meds.length;
 
-    visitList.innerHTML = data.visits.map(v =>
-        `<div>📅 ${v.date} - ${v.note}</div>`
+    visitList.innerHTML = data.visits.map((v,i)=>
+        `📅 ${v.date} - ${v.note} <button onclick="remove('visits',${i})">❌</button>`
     ).join("");
 
-    reportList.innerHTML = data.reports.map(r =>
-        `<div>📄 ${r.name}</div>`
+    reportList.innerHTML = data.reports.map((r,i)=>
+        `📄 ${r.name} <button onclick="remove('reports',${i})">❌</button>`
     ).join("");
 
-    medList.innerHTML = data.meds.map(m =>
-        `<div>💊 ${m.name}</div>`
+    medList.innerHTML = data.meds.map((m,i)=>
+        `💊 ${m.name} <button onclick="remove('meds',${i})">❌</button>`
     ).join("");
+
+    timeline.innerHTML = [
+        ...data.visits.map(v => `📅 ${v.date}`),
+        ...data.reports.map(r => `📄 ${r.name}`),
+        ...data.meds.map(m => `💊 ${m.name}`)
+    ].map(x => `<div>${x}</div>`).join("");
 
     drawChart();
 }
@@ -149,14 +160,20 @@ function drawChart() {
         chart = new Chart(ctx, {
             type: "bar",
             data: {
-                labels: ["Visite", "Referti", "Farmaci"],
-                datasets: [{ data: [v, r, m] }]
+                labels: ["Visite","Referti","Farmaci"],
+                datasets: [{ data: [v,r,m] }]
             }
         });
     } else {
-        chart.data.datasets[0].data = [v, r, m];
+        chart.data.datasets[0].data = [v,r,m];
         chart.update();
     }
+}
+
+/* UTIL */
+function today() {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 }
 
 /* INIT */
