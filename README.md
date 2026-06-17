@@ -1,2 +1,11 @@
 # SaluteLink-Test
-Diario sanitario digitale personale. 
+
+App per gestire:
+- Visite mediche
+- Referti
+- Farmaci
+- Promemoria
+- Storico sanitario
+
+Versione test GitHub. 
+
