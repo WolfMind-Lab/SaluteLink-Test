@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink</title>
+<title>SaluteLink PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -11,14 +11,9 @@
 
 <body>
 
-<div id="splashScreen">
-    <div class="logo">💙</div>
-    <h1>SaluteLink</h1>
-</div>
-
 <header>
     <h1>SaluteLink</h1>
-    <p>Health Journal</p>
+    <p>Cartella Clinica Digitale</p>
 </header>
 
 <main>
@@ -28,7 +23,7 @@
     <div class="card">
         <h2>📊 Dashboard</h2>
 
-        <button onclick="toggleTheme()">🌙 Tema</button>
+        <input id="search" placeholder="🔍 Cerca tutto..." oninput="searchAll()">
 
         <canvas id="chart" height="120"></canvas>
 
@@ -38,6 +33,11 @@
             <div>Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
     </div>
+
+    <div class="card">
+        <h3>📅 Timeline</h3>
+        <div id="timeline"></div>
+    </div>
 </section>
 
 <!-- VISITE -->
@@ -46,11 +46,11 @@
         <h2>📅 Visite</h2>
 
         <input type="date" id="visitDate">
-        <input type="text" id="visitNote" placeholder="Nota visita">
+        <input type="text" id="visitNote" placeholder="Nota">
 
-        <button onclick="addVisit()">Aggiungi visita</button>
+        <button onclick="addVisit()">Aggiungi</button>
 
-        <div id="visitView"></div>
+        <div id="visitList"></div>
     </div>
 </section>
 
@@ -59,7 +59,8 @@
     <div class="card">
         <h2>📄 Referti</h2>
 
-        <input id="reportInput" placeholder="Nome referto">
+        <input id="reportInput" placeholder="Nome">
+        <input id="reportDesc" placeholder="Descrizione">
 
         <select id="reportType">
             <option>Analisi</option>
@@ -67,11 +68,9 @@
             <option>Radiologia</option>
         </select>
 
-        <input id="reportDesc" placeholder="Descrizione">
-
         <button onclick="addReport()">Aggiungi</button>
 
-        <ul id="reportList"></ul>
+        <div id="reportList"></div>
     </div>
 </section>
 
@@ -80,13 +79,13 @@
     <div class="card">
         <h2>💊 Farmaci</h2>
 
-        <input id="medInput" placeholder="Nome farmaco">
-        <input id="medDose" placeholder="Dose (es: 500mg)">
-        <input id="medTime" placeholder="Orario (mattina/sera)">
+        <input id="medInput" placeholder="Nome">
+        <input id="medDose" placeholder="Dose">
+        <input id="medTime" placeholder="Orario">
 
         <button onclick="addMed()">Aggiungi</button>
 
-        <ul id="medList"></ul>
+        <div id="medList"></div>
     </div>
 </section>
 
