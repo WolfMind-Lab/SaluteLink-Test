@@ -3,15 +3,52 @@
 <head>
     <title>SaluteLink</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
+
+<div class="app">
+
     <h1>SaluteLink</h1>
+    <p class="subtitle">Il tuo diario sanitario digitale</p>
 
-    <p>Il tuo diario sanitario digitale</p>
+    <div class="card">
+        <h2>📅 Oggi</h2>
+        <p id="today">Nessuna visita programmata</p>
+    </div>
 
-    <button>Nuova visita</button>
-    <button>Aggiungi referto</button>
-    <button>Promemoria</button>
+    <div class="card">
+        <h2>💊 Promemoria</h2>
+        <ul>
+            <li>Bere acqua</li>
+            <li>Controllo farmaci</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>📄 Azioni rapide</h2>
+
+        <button onclick="aggiungiVisita()">+ Visita</button>
+        <button onclick="aggiungiReferto()">+ Referto</button>
+        <button onclick="reset()">Reset</button>
+    </div>
+
+</div>
+
+<script>
+function aggiungiVisita() {
+    document.getElementById("today").innerText = "Visita medica programmata ✔";
+}
+
+function aggiungiReferto() {
+    alert("Referto aggiunto (simulazione)");
+}
+
+function reset() {
+    document.getElementById("today").innerText = "Nessuna visita programmata";
+}
+</script>
+
 </body>
 </html>
