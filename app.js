@@ -1,18 +1,25 @@
+let data = {
+    visits: [],
+    reports: [],
+    meds: []
+};
+
+let chart;
+
+/* NAV */
 function go(page) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
 }
 
-/* PROFILO */
-function saveProfile() {
-    const name = document.getElementById("name").value;
-    const age = document.getElementById("age").value;
+/* SALVATAGGIO */
+function saveData() {
+    localStorage.setItem("salutelink", JSON.stringify(data));
+}
 
-    localStorage.setItem("name", name);
-    localStorage.setItem("age", age);
-
-    document.getElementById("profileView").innerText =
-        name + " - " + age + " anni";
+function loadData() {
+    const saved = localStorage.getItem("salutelink");
+    if (saved) data = JSON.parse(saved);
 }
 
 /* VISITE */
@@ -20,11 +27,12 @@ function addVisit() {
     const date = document.getElementById("visitDate").value;
     if (!date) return;
 
-    localStorage.setItem("visit", date);
+    data.visits.push({ date });
 
     document.getElementById("visitView").innerText =
-        "Visita: " + date;
+        "Ultima visita: " + date;
 
+    saveData();
     update();
 }
 
@@ -35,58 +43,71 @@ function addReport() {
 
     if (!input.value) return;
 
-    const li = document.createElement("li");
-    li.textContent = type.value + " - " + input.value;
+    data.reports.push({
+        type: type.value,
+        name: input.value,
+        date: new Date().toLocaleDateString()
+    });
 
-    document.getElementById("reportList").appendChild(li);
-
-    saveLists();
+    renderReports();
+    saveData();
     update();
+}
+
+function renderReports() {
+    const list = document.getElementById("reportList");
+    list.innerHTML = "";
+
+    data.reports.forEach(r => {
+        const li = document.createElement("li");
+        li.textContent = `${r.date} - ${r.type} - ${r.name}`;
+        list.appendChild(li);
+    });
 }
 
 /* FARMACI */
 function addMed() {
     const input = document.getElementById("medInput");
-
     if (!input.value) return;
 
-    const li = document.createElement("li");
-    li.textContent = input.value;
+    data.meds.push({ name: input.value });
 
-    document.getElementById("medList").appendChild(li);
-
-    saveLists();
+    renderMeds();
+    saveData();
     update();
 }
 
-/* SALVATAGGIO */
-function saveLists() {
-    localStorage.setItem("reports", document.getElementById("reportList").innerHTML);
-    localStorage.setItem("meds", document.getElementById("medList").innerHTML);
+function renderMeds() {
+    const list = document.getElementById("medList");
+    list.innerHTML = "";
+
+    data.meds.forEach(m => {
+        const li = document.createElement("li");
+        li.textContent = "💊 " + m.name;
+        list.appendChild(li);
+    });
 }
 
 /* DASHBOARD */
-let chart;
-
 function update() {
 
-    const v = localStorage.getItem("visit") ? 1 : 0;
-    const r = document.getElementById("reportList").children.length;
-    const m = document.getElementById("medList").children.length;
+    document.getElementById("visiteCount").innerText = data.visits.length;
+    document.getElementById("refertiCount").innerText = data.reports.length;
+    document.getElementById("farmaciCount").innerText = data.meds.length;
 
-    document.getElementById("visiteCount").innerText = v;
-    document.getElementById("refertiCount").innerText = r;
-    document.getElementById("farmaciCount").innerText = m;
-
-    drawChart(v, r, m);
+    drawChart();
 }
 
 /* GRAFICO */
-function drawChart(v, r, m) {
+function drawChart() {
 
     if (!window.Chart) return;
 
     const ctx = document.getElementById("chart");
+
+    const v = data.visits.length;
+    const r = data.reports.length;
+    const m = data.meds.length;
 
     if (!chart) {
         chart = new Chart(ctx, {
@@ -104,27 +125,18 @@ function drawChart(v, r, m) {
     }
 }
 
-/* LOAD */
+/* INIT */
 window.onload = function () {
 
-    document.getElementById("profileView").innerText =
-        (localStorage.getItem("name") || "") +
-        " - " +
-        (localStorage.getItem("age") || "") +
-        " anni";
+    loadData();
 
-    document.getElementById("visitView").innerText =
-        "Visita: " + (localStorage.getItem("visit") || "nessuna");
+    renderReports();
+    renderMeds();
 
-    document.getElementById("reportList").innerHTML =
-        localStorage.getItem("reports") || "";
-
-    document.getElementById("medList").innerHTML =
-        localStorage.getItem("meds") || "";
+    if (data.visits.length > 0) {
+        document.getElementById("visitView").innerText =
+            "Ultima visita: " + data.visits[data.visits.length - 1].date;
+    }
 
     update();
-
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js");
-    }
 };
