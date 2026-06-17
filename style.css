@@ -1,61 +1,88 @@
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
     background: #f4f6fb;
     color: #111;
 }
 
+/* HEADER */
 header {
     text-align: center;
-    padding: 20px;
+    padding: 22px 15px;
     background: #2c7be5;
     color: white;
 }
 
 header p {
-    opacity: 0.8;
+    opacity: 0.85;
+    margin-top: 5px;
+    font-size: 14px;
 }
 
+/* CONTAINER */
 main {
     max-width: 420px;
     margin: auto;
     padding: 15px;
-    padding-bottom: 80px;
+    padding-bottom: 85px;
 }
 
+/* CARD */
 .card {
     background: white;
-    padding: 15px;
+    padding: 16px;
     margin-bottom: 15px;
-    border-radius: 14px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
+/* INPUT */
 input, select {
     width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 11px;
+    margin: 6px 0;
     border-radius: 10px;
     border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
 }
 
+input:focus, select:focus {
+    border-color: #2c7be5;
+}
+
+/* BUTTON */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 11px;
     border: none;
     border-radius: 10px;
     background: #2c7be5;
     color: white;
     font-weight: 600;
+    font-size: 14px;
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
+/* DASH GRID */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     text-align: center;
     gap: 10px;
+    font-size: 14px;
 }
 
+.grid div {
+    background: #f2f4fb;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* NAV */
 nav {
     position: fixed;
     bottom: 0;
@@ -71,8 +98,11 @@ nav button {
     background: none;
     color: #2c7be5;
     border-radius: 0;
+    padding: 14px;
+    font-size: 13px;
 }
 
+/* PAGES */
 .page {
     display: none;
 }
