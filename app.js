@@ -12,121 +12,93 @@ function go(page) {
     document.getElementById(page).classList.add("active");
 }
 
-/* THEME */
-function toggleTheme() {
-    document.body.classList.toggle("dark");
+/* SEARCH */
+function searchAll() {
+    const q = document.getElementById("search").value.toLowerCase();
+
+    const all = [
+        ...data.visits.map(v => "visita " + v.note),
+        ...data.reports.map(r => r.name + " " + r.desc),
+        ...data.meds.map(m => m.name)
+    ];
+
+    const results = all.filter(x => x.toLowerCase().includes(q));
+
+    document.getElementById("timeline").innerHTML =
+        results.map(r => `<div class="item">🔎 ${r}</div>`).join("");
 }
 
 /* VISITE */
 function addVisit() {
-    const date = document.getElementById("visitDate").value;
-    const note = document.getElementById("visitNote").value;
-
-    if (!date) return;
-
-    data.visits.push({ date, note });
-
-    renderVisits();
-    save();
-    update();
-}
-
-function renderVisits() {
-    const view = document.getElementById("visitView");
-    view.innerHTML = "";
-
-    data.visits.forEach(v => {
-        const div = document.createElement("div");
-        div.innerHTML = `📅 ${v.date} — 📝 ${v.note}`;
-        view.appendChild(div);
+    data.visits.push({
+        date: visitDate.value,
+        note: visitNote.value
     });
+
+    save();
+    renderAll();
 }
 
 /* REFERTI */
 function addReport() {
-    const name = document.getElementById("reportInput").value;
-    const type = document.getElementById("reportType").value;
-    const desc = document.getElementById("reportDesc").value;
-
-    if (!name) return;
-
     data.reports.push({
-        name,
-        type,
-        desc
+        name: reportInput.value,
+        type: reportType.value,
+        desc: reportDesc.value
     });
 
-    renderReports();
     save();
-    update();
-}
-
-function renderReports() {
-    const list = document.getElementById("reportList");
-    list.innerHTML = "";
-
-    data.reports.forEach(r => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            📄 <b>${r.name}</b> (${r.type})<br>
-            📝 ${r.desc}
-        `;
-        list.appendChild(li);
-    });
+    renderAll();
 }
 
 /* FARMACI */
 function addMed() {
-    const name = document.getElementById("medInput").value;
-    const dose = document.getElementById("medDose").value;
-    const time = document.getElementById("medTime").value;
-
-    if (!name) return;
-
-    data.meds.push({ name, dose, time });
-
-    renderMeds();
-    save();
-    update();
-}
-
-function renderMeds() {
-    const list = document.getElementById("medList");
-    list.innerHTML = "";
-
-    data.meds.forEach(m => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            💊 <b>${m.name}</b><br>
-            ${m.dose} — ${m.time}
-        `;
-        list.appendChild(li);
+    data.meds.push({
+        name: medInput.value,
+        dose: medDose.value,
+        time: medTime.value
     });
+
+    save();
+    renderAll();
 }
 
-/* STORAGE */
-function save() {
-    localStorage.setItem("salutelink", JSON.stringify(data));
+/* DELETE GENERICO */
+function remove(type, index) {
+    data[type].splice(index, 1);
+    save();
+    renderAll();
 }
 
-function load() {
-    const saved = localStorage.getItem("salutelink");
-    if (saved) data = JSON.parse(saved);
-}
+/* RENDER */
+function renderAll() {
+    visiteCount.innerText = data.visits.length;
+    refertiCount.innerText = data.reports.length;
+    farmaciCount.innerText = data.meds.length;
 
-/* DASHBOARD */
-function update() {
-    document.getElementById("visiteCount").innerText = data.visits.length;
-    document.getElementById("refertiCount").innerText = data.reports.length;
-    document.getElementById("farmaciCount").innerText = data.meds.length;
+    visitList.innerHTML = data.visits.map((v,i)=>
+        `<div class="item">📅 ${v.date} - ${v.note} <button onclick="remove('visits',${i})">❌</button></div>`
+    ).join("");
+
+    reportList.innerHTML = data.reports.map((r,i)=>
+        `<div class="item">📄 ${r.name} (${r.type}) - ${r.desc} <button onclick="remove('reports',${i})">❌</button></div>`
+    ).join("");
+
+    medList.innerHTML = data.meds.map((m,i)=>
+        `<div class="item">💊 ${m.name} - ${m.dose} - ${m.time} <button onclick="remove('meds',${i})">❌</button></div>`
+    ).join("");
+
+    timeline.innerHTML = [
+        ...data.visits.map(v => `📅 ${v.date} - ${v.note}`),
+        ...data.reports.map(r => `📄 ${r.name}`),
+        ...data.meds.map(m => `💊 ${m.name}`)
+    ].map(x => `<div class="item">${x}</div>`).join("");
 
     drawChart();
 }
 
 /* CHART */
 function drawChart() {
-    if (!window.Chart) return;
-
     const ctx = document.getElementById("chart");
 
     const v = data.visits.length;
@@ -149,13 +121,8 @@ function drawChart() {
 
 /* INIT */
 window.onload = function () {
-    load();
-    renderVisits();
-    renderReports();
-    renderMeds();
-    update();
+    const saved = localStorage.getItem("salutelink");
+    if (saved) data = JSON.parse(saved);
 
-    setTimeout(() => {
-        document.getElementById("splashScreen")?.remove();
-    }, 1800);
+    renderAll();
 };
