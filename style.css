@@ -1,15 +1,40 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
+    margin: 0;
+    background: #f4f6f8;
+}
+
+.app {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
 }
 
 h1 {
+    text-align: center;
     color: #2c7be5;
 }
 
+.subtitle {
+    text-align: center;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
 button {
-    padding: 10px 20px;
-    margin: 5px;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    border: none;
     border-radius: 10px;
+    background: #2c7be5;
+    color: white;
 }
