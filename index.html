@@ -1,92 +1,90 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>SaluteLink</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>SaluteLink Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Digital Health Journal</p>
+    <p>Personal Health OS</p>
 </header>
 
 <main>
 
-    <!-- DASHBOARD -->
-    <section id="home" class="page active">
+<!-- DASHBOARD -->
+<section id="home" class="page active">
 
-        <div class="card">
-            <h2>Dashboard</h2>
+    <div class="card">
+        <h2>📊 Overview</h2>
 
-            <div class="grid">
-                <div>📅 Visite<br><span id="countVisits">0</span></div>
-                <div>📄 Referti<br><span id="countReports">0</span></div>
-                <div>💊 Farmaci<br><span id="countMeds">0</span></div>
-            </div>
+        <div class="grid">
+            <div>Visite<br><b id="visiteCount">0</b></div>
+            <div>Referti<br><b id="refertiCount">0</b></div>
+            <div>Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
+    </div>
 
-        <div class="card">
-            <h2>Profilo</h2>
-            <input id="name" placeholder="Nome">
-            <input id="age" type="number" placeholder="Età">
-            <button onclick="saveProfile()">Salva</button>
-            <p id="profileView"></p>
-        </div>
+    <div class="card">
+        <h2>👤 Profilo</h2>
+        <input id="name" placeholder="Nome">
+        <input id="age" type="number" placeholder="Età">
+        <button onclick="saveProfile()">Salva profilo</button>
+        <p id="profileView"></p>
+    </div>
 
-    </section>
+</section>
 
-    <!-- VISITE -->
-    <section id="visite" class="page">
+<!-- VISITE -->
+<section id="visite" class="page">
 
-        <div class="card">
-            <h2>Visite mediche</h2>
+    <div class="card">
+        <h2>📅 Visite</h2>
+        <input type="date" id="visitDate">
+        <button onclick="addVisit()">Aggiungi visita</button>
+        <p id="visitView"></p>
+    </div>
 
-            <input type="date" id="visitDate">
-            <button onclick="addVisit()">Aggiungi visita</button>
+</section>
 
-            <p id="visitView"></p>
-        </div>
+<!-- REFERTI -->
+<section id="referti" class="page">
 
-    </section>
+    <div class="card">
+        <h2>📄 Referti</h2>
 
-    <!-- REFERTI -->
-    <section id="referti" class="page">
+        <input id="reportInput" placeholder="Nome referto">
 
-        <div class="card">
-            <h2>Referti</h2>
+        <select id="reportType">
+            <option>Analisi</option>
+            <option>Visita</option>
+            <option>Radiologia</option>
+        </select>
 
-            <input id="reportInput" placeholder="Nome referto">
+        <button onclick="addReport()">Aggiungi</button>
 
-            <select id="reportType">
-                <option>Analisi</option>
-                <option>Visita</option>
-                <option>Radiologia</option>
-            </select>
+        <ul id="reportList"></ul>
+    </div>
 
-            <button onclick="addReport()">Aggiungi</button>
+</section>
 
-            <ul id="reportList"></ul>
-        </div>
+<!-- FARMACI -->
+<section id="farmaci" class="page">
 
-    </section>
+    <div class="card">
+        <h2>💊 Farmaci</h2>
 
-    <!-- FARMACI -->
-    <section id="farmaci" class="page">
+        <input id="medInput" placeholder="Farmaco">
+        <button onclick="addMed()">Aggiungi</button>
 
-        <div class="card">
-            <h2>Farmaci</h2>
+        <ul id="medList"></ul>
+    </div>
 
-            <input id="medInput" placeholder="Nome farmaco">
-            <button onclick="addMed()">Aggiungi</button>
-
-            <ul id="medList"></ul>
-        </div>
-
-    </section>
+</section>
 
 </main>
 
