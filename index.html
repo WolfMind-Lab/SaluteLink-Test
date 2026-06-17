@@ -13,41 +13,78 @@
     <h1>SaluteLink</h1>
     <p class="subtitle">Il tuo diario sanitario digitale</p>
 
+    <!-- 📅 VISITA -->
     <div class="card">
-        <h2>📅 Oggi</h2>
+        <h2>📅 Nuova visita</h2>
+
+        <input type="date" id="dataVisita">
+        <button onclick="aggiungiVisita()">Aggiungi visita</button>
+
         <p id="today">Nessuna visita programmata</p>
     </div>
 
+    <!-- 📄 REFERTI -->
     <div class="card">
-        <h2>💊 Promemoria</h2>
-        <ul>
-            <li>Bere acqua</li>
-            <li>Controllo farmaci</li>
-        </ul>
-    </div>
+        <h2>📄 Referti</h2>
 
-    <div class="card">
-        <h2>📄 Azioni rapide</h2>
+        <input type="text" id="refertoInput" placeholder="Nome referto">
+        <button onclick="aggiungiReferto()">Aggiungi referto</button>
 
-        <button onclick="aggiungiVisita()">+ Visita</button>
-        <button onclick="aggiungiReferto()">+ Referto</button>
-        <button onclick="reset()">Reset</button>
+        <ul id="listaReferti"></ul>
     </div>
 
 </div>
 
 <script>
+
 function aggiungiVisita() {
-    document.getElementById("today").innerText = "Visita medica programmata ✔";
+    let data = document.getElementById("dataVisita").value;
+
+    if (!data) {
+        alert("Seleziona una data");
+        return;
+    }
+
+    document.getElementById("today").innerText =
+        "Visita programmata: " + data;
+
+    localStorage.setItem("visita", data);
 }
 
 function aggiungiReferto() {
-    alert("Referto aggiunto (simulazione)");
+    let testo = document.getElementById("refertoInput").value;
+
+    if (!testo) return;
+
+    let li = document.createElement("li");
+    li.textContent = testo;
+
+    document.getElementById("listaReferti").appendChild(li);
+
+    localStorage.setItem("referti",
+        document.getElementById("listaReferti").innerHTML
+    );
+
+    document.getElementById("refertoInput").value = "";
 }
 
-function reset() {
-    document.getElementById("today").innerText = "Nessuna visita programmata";
-}
+// 💾 CARICAMENTO DATI SALVATI
+window.onload = function () {
+
+    let visita = localStorage.getItem("visita");
+
+    if (visita) {
+        document.getElementById("today").innerText =
+            "Visita programmata: " + visita;
+    }
+
+    let referti = localStorage.getItem("referti");
+
+    if (referti) {
+        document.getElementById("listaReferti").innerHTML = referti;
+    }
+};
+
 </script>
 
 </body>
