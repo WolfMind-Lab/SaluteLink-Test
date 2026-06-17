@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink Health Pro</title>
+<title>SaluteLink Pro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -12,7 +12,7 @@
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Health Calendar Pro</p>
+    <p>Health OS</p>
 </header>
 
 <main>
@@ -24,14 +24,14 @@
         <h2>📊 Dashboard</h2>
 
         <div class="grid">
-            <div>Visite<br><b id="visiteCount">0</b></div>
-            <div>Referti<br><b id="refertiCount">0</b></div>
-            <div>Farmaci<br><b id="farmaciCount">0</b></div>
+            <div class="box">Visite<br><b id="visiteCount">0</b></div>
+            <div class="box">Referti<br><b id="refertiCount">0</b></div>
+            <div class="box">Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
     </div>
 
     <div class="card">
-        <h3>📌 Timeline</h3>
+        <h3>📌 Attività recenti</h3>
         <div id="timeline"></div>
     </div>
 
@@ -41,23 +41,21 @@
 <section id="visite" class="page">
 
     <div class="card">
-
-        <h2>📅 Calendario Visite</h2>
+        <h2>📅 Calendario</h2>
 
         <div class="calendar-header">
-            <button onclick="prevMonth()">⬅</button>
+            <button onclick="prevMonth()">‹</button>
             <h3 id="monthLabel"></h3>
-            <button onclick="nextMonth()">➡</button>
+            <button onclick="nextMonth()">›</button>
         </div>
 
         <div id="calendar"></div>
 
-        <input id="visitNote" placeholder="Nota visita">
-
-        <!-- ORARIO VERO -->
-        <input type="time" id="visitTime">
-
-        <button onclick="addVisit()">Aggiungi visita</button>
+        <div class="card-inner">
+            <input id="visitNote" placeholder="Nota visita">
+            <input type="time" id="visitTime">
+            <button onclick="addVisit()">Aggiungi visita</button>
+        </div>
 
         <div id="visitList"></div>
     </div>
@@ -68,13 +66,12 @@
 <section id="referti" class="page">
 
     <div class="card">
-
         <h2>📄 Referti</h2>
 
         <input id="reportName" placeholder="Nome referto">
-        <textarea id="reportDesc" placeholder="Descrizione referto"></textarea>
+        <textarea id="reportDesc" placeholder="Descrizione"></textarea>
 
-        <button onclick="addReport()">Aggiungi referto</button>
+        <button onclick="addReport()">Aggiungi</button>
 
         <div id="reportList"></div>
     </div>
@@ -85,16 +82,13 @@
 <section id="farmaci" class="page">
 
     <div class="card">
-
         <h2>💊 Farmaci</h2>
 
-        <input id="medName" placeholder="Nome farmaco">
-
-        <input id="medDose" placeholder="Dose (es. 500mg)">
-
+        <input id="medName" placeholder="Farmaco">
+        <input id="medDose" placeholder="Dose">
         <input type="time" id="medTime">
 
-        <button onclick="addMed()">Aggiungi farmaco</button>
+        <button onclick="addMed()">Aggiungi</button>
 
         <div id="medList"></div>
     </div>
