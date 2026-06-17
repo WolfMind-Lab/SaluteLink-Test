@@ -5,39 +5,65 @@ function go(page) {
 
 /* PROFILO */
 function saveProfile() {
-    localStorage.setItem("name", name.value);
-    localStorage.setItem("age", age.value);
+    const name = document.getElementById("name").value;
+    const age = document.getElementById("age").value;
 
-    profileView.innerText = name.value + " - " + age.value;
+    localStorage.setItem("name", name);
+    localStorage.setItem("age", age);
+
+    document.getElementById("profileView").innerText =
+        name + " - " + age + " anni";
 }
 
 /* VISITE */
 function addVisit() {
-    localStorage.setItem("visit", visitDate.value);
-    visitView.innerText = "Visita: " + visitDate.value;
+    const visitDate = document.getElementById("visitDate").value;
+
+    if (!visitDate) return;
+
+    localStorage.setItem("visit", visitDate);
+
+    document.getElementById("visitView").innerText =
+        "Visita: " + visitDate;
+
     update();
 }
 
 /* REFERTI */
 function addReport() {
-    let li = document.createElement("li");
-    li.textContent = reportType.value + " - " + reportInput.value;
+    const input = document.getElementById("reportInput");
+    const type = document.getElementById("reportType");
 
-    reportList.appendChild(li);
+    if (!input.value) return;
 
-    localStorage.setItem("reports", reportList.innerHTML);
+    const li = document.createElement("li");
+    li.textContent = type.value + " - " + input.value;
+
+    document.getElementById("reportList").appendChild(li);
+
+    saveLists();
     update();
 }
 
 /* FARMACI */
 function addMed() {
-    let li = document.createElement("li");
-    li.textContent = medInput.value;
+    const input = document.getElementById("medInput");
 
-    medList.appendChild(li);
+    if (!input.value) return;
 
-    localStorage.setItem("meds", medList.innerHTML);
+    const li = document.createElement("li");
+    li.textContent = input.value;
+
+    document.getElementById("medList").appendChild(li);
+
+    saveLists();
     update();
+}
+
+/* SALVATAGGIO LISTE */
+function saveLists() {
+    localStorage.setItem("reports", document.getElementById("reportList").innerHTML);
+    localStorage.setItem("meds", document.getElementById("medList").innerHTML);
 }
 
 /* DASHBOARD */
@@ -45,22 +71,26 @@ let chart;
 
 function update() {
 
-    visiteCount.innerText = localStorage.getItem("visit") ? 1 : 0;
-    refertiCount.innerText = reportList.children.length;
-    farmaciCount.innerText = medList.children.length;
+    const visits = localStorage.getItem("visit") ? 1 : 0;
+    const reports = document.getElementById("reportList").children.length;
+    const meds = document.getElementById("medList").children.length;
 
-    drawChart();
+    document.getElementById("visiteCount").innerText = visits;
+    document.getElementById("refertiCount").innerText = reports;
+    document.getElementById("farmaciCount").innerText = meds;
+
+    drawChart(visits, reports, meds);
 }
 
 /* GRAFICO */
-function drawChart() {
+function drawChart(v, r, m) {
 
-    let v = visiteCount.innerText;
-    let r = refertiCount.innerText;
-    let m = farmaciCount.innerText;
+    if (!window.Chart) return;
+
+    const ctx = document.getElementById("chart");
 
     if (!chart) {
-        chart = new Chart(document.getElementById("chart"), {
+        chart = new Chart(ctx, {
             type: "bar",
             data: {
                 labels: ["Visite", "Referti", "Farmaci"],
@@ -78,16 +108,22 @@ function drawChart() {
 /* LOAD */
 window.onload = function () {
 
-    if (localStorage.getItem("name")) {
-        profileView.innerText =
-            localStorage.getItem("name") + " - " + localStorage.getItem("age");
+    const name = localStorage.getItem("name");
+    const age = localStorage.getItem("age");
+
+    if (name && age) {
+        document.getElementById("profileView").innerText =
+            name + " - " + age + " anni";
     }
 
-    visitView.innerText =
+    document.getElementById("visitView").innerText =
         "Visita: " + (localStorage.getItem("visit") || "nessuna");
 
-    reportList.innerHTML = localStorage.getItem("reports") || "";
-    medList.innerHTML = localStorage.getItem("meds") || "";
+    document.getElementById("reportList").innerHTML =
+        localStorage.getItem("reports") || "";
+
+    document.getElementById("medList").innerHTML =
+        localStorage.getItem("meds") || "";
 
     update();
 
