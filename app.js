@@ -20,17 +20,14 @@ function toggleTheme() {
 /* VISITE */
 function addVisit() {
     const date = document.getElementById("visitDate").value;
-    const note = prompt("Nota visita (facoltativa):");
+    const note = document.getElementById("visitNote").value;
 
     if (!date) return;
 
-    data.visits.push({
-        date,
-        note: note || "Nessuna nota"
-    });
+    data.visits.push({ date, note });
 
-    save();
     renderVisits();
+    save();
     update();
 }
 
@@ -38,32 +35,25 @@ function renderVisits() {
     const view = document.getElementById("visitView");
     view.innerHTML = "";
 
-    if (data.visits.length === 0) {
-        view.innerHTML = "Nessuna visita";
-        return;
-    }
-
     data.visits.forEach(v => {
         const div = document.createElement("div");
-        div.innerHTML = `📅 ${v.date} - 📝 ${v.note}`;
+        div.innerHTML = `📅 ${v.date} — 📝 ${v.note}`;
         view.appendChild(div);
     });
 }
 
 /* REFERTI */
 function addReport() {
-    const input = document.getElementById("reportInput");
-    const type = document.getElementById("reportType");
+    const name = document.getElementById("reportInput").value;
+    const type = document.getElementById("reportType").value;
+    const desc = document.getElementById("reportDesc").value;
 
-    const desc = prompt("Descrizione referto (facoltativa):");
-
-    if (!input.value) return;
+    if (!name) return;
 
     data.reports.push({
-        name: input.value,
-        type: type.value,
-        desc: desc || "Nessuna descrizione",
-        date: new Date().toLocaleDateString()
+        name,
+        type,
+        desc
     });
 
     renderReports();
@@ -78,8 +68,8 @@ function renderReports() {
     data.reports.forEach(r => {
         const li = document.createElement("li");
         li.innerHTML = `
-            📄 ${r.date} - ${r.type} - <b>${r.name}</b><br>
-            <small>${r.desc}</small>
+            📄 <b>${r.name}</b> (${r.type})<br>
+            📝 ${r.desc}
         `;
         list.appendChild(li);
     });
@@ -88,16 +78,12 @@ function renderReports() {
 /* FARMACI */
 function addMed() {
     const name = document.getElementById("medInput").value;
-    const dose = prompt("Dose (es: 500mg)");
-    const time = prompt("Orario (es: mattina / sera)");
+    const dose = document.getElementById("medDose").value;
+    const time = document.getElementById("medTime").value;
 
     if (!name) return;
 
-    data.meds.push({
-        name,
-        dose: dose || "non specificata",
-        time: time || "non specificato"
-    });
+    data.meds.push({ name, dose, time });
 
     renderMeds();
     save();
@@ -112,7 +98,7 @@ function renderMeds() {
         const li = document.createElement("li");
         li.innerHTML = `
             💊 <b>${m.name}</b><br>
-            <small>${m.dose} - ${m.time}</small>
+            ${m.dose} — ${m.time}
         `;
         list.appendChild(li);
     });
@@ -152,9 +138,7 @@ function drawChart() {
             type: "bar",
             data: {
                 labels: ["Visite", "Referti", "Farmaci"],
-                datasets: [{
-                    data: [v, r, m]
-                }]
+                datasets: [{ data: [v, r, m] }]
             }
         });
     } else {
@@ -166,15 +150,12 @@ function drawChart() {
 /* INIT */
 window.onload = function () {
     load();
-
-    if (data.visits.length > 0) renderVisits();
+    renderVisits();
     renderReports();
     renderMeds();
-
     update();
 
     setTimeout(() => {
-        const splash = document.getElementById("splashScreen");
-        if (splash) splash?.remove();
+        document.getElementById("splashScreen")?.remove();
     }, 1800);
 };
