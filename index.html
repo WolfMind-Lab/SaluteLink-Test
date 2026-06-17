@@ -1,85 +1,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>SaluteLink</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaluteLink</title>
 </head>
-
 <body>
-
-<header>
-    <h1>SaluteLink</h1>
-    <p>Health Feed</p>
-</header>
-
-<main>
-
-<!-- HOME FEED -->
-<section id="home" class="page active">
-    <div class="card">
-        <h2>📌 Oggi</h2>
-        <div id="todayFeed"></div>
-    </div>
-
-    <div class="card">
-        <h2>⚡ Prossimi eventi</h2>
-        <div id="upcoming"></div>
-    </div>
-</section>
-
-<!-- ADD -->
-<section id="add" class="page">
-
-    <div class="card">
-        <h2>➕ Aggiungi</h2>
-
-        <select id="type">
-            <option value="visit">Visita</option>
-            <option value="med">Farmaco</option>
-            <option value="report">Referto</option>
-        </select>
-
-        <input id="title" placeholder="Titolo">
-        <input id="desc" placeholder="Dettagli">
-        <input type="date" id="date">
-        <input type="time" id="time">
-
-        <button onclick="addItem()">Salva</button>
-    </div>
-
-</section>
-
-<!-- CALENDAR -->
-<section id="calendar" class="page">
-
-    <div class="card">
-        <h2>📅 Calendario</h2>
-        <div id="calendarGrid"></div>
-    </div>
-
-</section>
-
-<!-- ARCHIVE -->
-<section id="archive" class="page">
-
-    <div class="card">
-        <h2>📁 Archivio</h2>
-        <div id="archiveList"></div>
-    </div>
-
-</section>
-
-</main>
-
-<nav>
-    <button onclick="go('home')">🏠</button>
-    <button onclick="go('add')">➕</button>
-    <button onclick="go('calendar')">📅</button>
-    <button onclick="go('archive')">📁</button>
-</nav>
-
-<script src="app.js"></script>
+  <div id="root"></div>
 </body>
 </html>
