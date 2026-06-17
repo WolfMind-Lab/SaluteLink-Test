@@ -76,3 +76,17 @@ nav button {
 .page.active {
     display: block;
 }
+
+.card h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card {
+    transition: transform 0.2s ease;
+}
+
+.card:active {
+    transform: scale(0.98);
+}
