@@ -1,215 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
+    <meta charset="UTF-8">
     <title>SaluteLink</title>
-    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
-
+<header>
     <h1>SaluteLink</h1>
-    <p class="subtitle">Health tracker personale</p>
+    <p>Digital Health Journal</p>
+</header>
 
-    <!-- 🏠 HOME -->
-    <div id="home" class="page active">
+<main>
 
-        <!-- 👤 PROFILO -->
+    <!-- DASHBOARD -->
+    <section id="home" class="page active">
         <div class="card">
-            <h2>👤 Profilo</h2>
-            <input id="nomeUtente" placeholder="Nome">
-            <input id="etaUtente" type="number" placeholder="Età">
-            <button onclick="salvaProfilo()">Salva profilo</button>
-            <p id="profiloInfo"></p>
+            <h2>Dashboard</h2>
+            <div class="grid">
+                <div>📅 Visite<br><span id="countVisits">0</span></div>
+                <div>📄 Referti<br><span id="countReports">0</span></div>
+                <div>💊 Farmaci<br><span id="countMeds">0</span></div>
+            </div>
         </div>
 
-        <!-- 📊 DASHBOARD -->
         <div class="card">
-            <h2>📊 Dashboard</h2>
-            <p>Visite: <span id="countVisite">0</span></p>
-            <p>Referti: <span id="countReferti">0</span></p>
-            <p>Farmaci: <span id="countFarmaci">0</span></p>
+            <h2>Profilo</h2>
+            <input id="name" placeholder="Nome">
+            <input id="age" type="number" placeholder="Età">
+            <button onclick="saveProfile()">Salva</button>
+            <p id="profileView"></p>
         </div>
+    </section>
 
-        <!-- 📈 GRAFICO SEMPLICE -->
+    <!-- VISITE -->
+    <section id="visite" class="page">
         <div class="card">
-            <h2>📈 Attività salute</h2>
-            <div id="barChart"></div>
+            <h2>Visite mediche</h2>
+            <input type="date" id="visitDate">
+            <button onclick="addVisit()">Aggiungi visita</button>
+            <p id="visitView"></p>
         </div>
+    </section>
 
-    </div>
-
-    <!-- 📅 VISITE -->
-    <div id="visite" class="page">
-
+    <!-- REFERTI -->
+    <section id="referti" class="page">
         <div class="card">
-            <h2>📅 Nuova visita</h2>
+            <h2>Referti</h2>
+            <input id="reportInput" placeholder="Nome referto">
 
-            <input type="date" id="dataVisita">
-            <button onclick="aggiungiVisita()">Aggiungi visita</button>
-
-            <p id="today">Nessuna visita programmata</p>
-        </div>
-
-    </div>
-
-    <!-- 📄 REFERTI -->
-    <div id="referti" class="page">
-
-        <div class="card">
-            <h2>📄 Referti</h2>
-
-            <input id="refertoInput" placeholder="Nome referto">
-            <select id="categoriaReferto">
+            <select id="reportType">
                 <option>Analisi</option>
                 <option>Visita</option>
-                <option>Radiografia</option>
+                <option>Radiologia</option>
             </select>
 
-            <button onclick="aggiungiReferto()">Aggiungi referto</button>
+            <button onclick="addReport()">Aggiungi</button>
 
-            <ul id="listaReferti"></ul>
+            <ul id="reportList"></ul>
         </div>
+    </section>
 
-    </div>
-
-    <!-- 💊 FARMACI -->
-    <div id="farmaci" class="page">
-
+    <!-- FARMACI -->
+    <section id="farmaci" class="page">
         <div class="card">
-            <h2>💊 Farmaci / Promemoria</h2>
-
-            <input id="farmacoInput" placeholder="Nome farmaco">
-            <button onclick="aggiungiFarmaco()">Aggiungi</button>
-
-            <ul id="listaFarmaci"></ul>
+            <h2>Farmaci</h2>
+            <input id="medInput" placeholder="Nome farmaco">
+            <button onclick="addMed()">Aggiungi</button>
+            <ul id="medList"></ul>
         </div>
+    </section>
 
-    </div>
+</main>
 
-</div>
+<!-- NAV -->
+<nav>
+    <button onclick="go('home')">Home</button>
+    <button onclick="go('visite')">Visite</button>
+    <button onclick="go('referti')">Referti</button>
+    <button onclick="go('farmaci')">Farmaci</button>
+</nav>
 
-<!-- 📱 NAV -->
-<div class="navbar">
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('visite')">Visite</button>
-    <button onclick="showPage('referti')">Referti</button>
-    <button onclick="showPage('farmaci')">Farmaci</button>
-</div>
-
-<script>
-
-function showPage(page) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(page).classList.add("active");
-}
-
-/* 👤 PROFILO */
-function salvaProfilo() {
-    let nome = document.getElementById("nomeUtente").value;
-    let eta = document.getElementById("etaUtente").value;
-
-    localStorage.setItem("nome", nome);
-    localStorage.setItem("eta", eta);
-
-    document.getElementById("profiloInfo").innerText =
-        nome + " - " + eta + " anni";
-}
-
-/* 📅 VISITE */
-function aggiungiVisita() {
-    let data = document.getElementById("dataVisita").value;
-    if (!data) return;
-
-    localStorage.setItem("visita", data);
-    document.getElementById("today").innerText = "Visita: " + data;
-    aggiorna();
-}
-
-/* 📄 REFERTI */
-function aggiungiReferto() {
-    let testo = document.getElementById("refertoInput").value;
-    let cat = document.getElementById("categoriaReferto").value;
-
-    if (!testo) return;
-
-    let li = document.createElement("li");
-    li.textContent = cat + " - " + testo;
-
-    document.getElementById("listaReferti").appendChild(li);
-
-    salvaLista("referti", "listaReferti");
-    aggiorna();
-}
-
-/* 💊 FARMACI */
-function aggiungiFarmaco() {
-    let testo = document.getElementById("farmacoInput").value;
-    if (!testo) return;
-
-    let li = document.createElement("li");
-    li.textContent = testo;
-
-    document.getElementById("listaFarmaci").appendChild(li);
-
-    salvaLista("farmaci", "listaFarmaci");
-    aggiorna();
-}
-
-/* 💾 SALVATAGGIO LISTE */
-function salvaLista(key, id) {
-    localStorage.setItem(key, document.getElementById(id).innerHTML);
-}
-
-/* 📊 DASHBOARD */
-function aggiorna() {
-    document.getElementById("countVisite").innerText =
-        localStorage.getItem("visita") ? 1 : 0;
-
-    document.getElementById("countReferti").innerText =
-        document.querySelectorAll("#listaReferti li").length;
-
-    document.getElementById("countFarmaci").innerText =
-        document.querySelectorAll("#listaFarmaci li").length;
-
-    grafico();
-}
-
-/* 📈 GRAFICO SEMPLICE */
-function grafico() {
-    let v = document.querySelectorAll("#listaReferti li").length;
-    let f = document.querySelectorAll("#listaFarmaci li").length;
-
-    document.getElementById("barChart").innerHTML =
-        "Referti: " + "█".repeat(v) + "<br>Farmaci: " + "█".repeat(f);
-}
-
-/* 🚀 LOAD */
-window.onload = function () {
-
-    document.getElementById("today").innerText =
-        "Visita: " + (localStorage.getItem("visita") || "nessuna");
-
-    document.getElementById("listaReferti").innerHTML =
-        localStorage.getItem("referti") || "";
-
-    document.getElementById("listaFarmaci").innerHTML =
-        localStorage.getItem("farmaci") || "";
-
-    let nome = localStorage.getItem("nome");
-    let eta = localStorage.getItem("eta");
-
-    if (nome) {
-        document.getElementById("profiloInfo").innerText =
-            nome + " - " + eta + " anni";
-    }
-
-    aggiorna();
-};
-
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
