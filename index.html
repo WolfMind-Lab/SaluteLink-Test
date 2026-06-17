@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink PRO</title>
+<title>SaluteLink</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -23,8 +23,6 @@
     <div class="card">
         <h2>📊 Dashboard</h2>
 
-        <input id="search" placeholder="🔍 Cerca tutto..." oninput="searchAll()">
-
         <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
@@ -33,24 +31,29 @@
             <div>Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
     </div>
-
-    <div class="card">
-        <h3>📅 Timeline</h3>
-        <div id="timeline"></div>
-    </div>
 </section>
 
-<!-- VISITE -->
+<!-- CALENDARIO VISITE -->
 <section id="visite" class="page">
     <div class="card">
-        <h2>📅 Visite</h2>
 
-        <input type="date" id="visitDate">
-        <input type="text" id="visitNote" placeholder="Nota">
+        <h2>📅 Calendario Visite</h2>
 
-        <button onclick="addVisit()">Aggiungi</button>
+        <div class="calendar-header">
+            <button onclick="prevMonth()">⬅</button>
+            <h3 id="monthLabel"></h3>
+            <button onclick="nextMonth()">➡</button>
+        </div>
+
+        <div id="calendar"></div>
+
+        <input type="text" id="visitNote" placeholder="Nota visita">
+        <p id="selectedDateLabel">Nessuna data selezionata</p>
+
+        <button onclick="addVisitFromCalendar()">Aggiungi visita</button>
 
         <div id="visitList"></div>
+
     </div>
 </section>
 
