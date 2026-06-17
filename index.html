@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink</title>
+<title>SaluteLink PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Cartella Clinica Digitale</p>
+    <p>Clinica Digitale PRO</p>
 </header>
 
 <main>
@@ -22,7 +22,6 @@
 <section id="home" class="page active">
     <div class="card">
         <h2>📊 Dashboard</h2>
-
         <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
@@ -31,12 +30,16 @@
             <div>Farmaci<br><b id="farmaciCount">0</b></div>
         </div>
     </div>
+
+    <div class="card">
+        <h3>📅 Timeline</h3>
+        <div id="timeline"></div>
+    </div>
 </section>
 
-<!-- CALENDARIO VISITE -->
+<!-- VISITE + CALENDARIO -->
 <section id="visite" class="page">
     <div class="card">
-
         <h2>📅 Calendario Visite</h2>
 
         <div class="calendar-header">
@@ -47,13 +50,10 @@
 
         <div id="calendar"></div>
 
-        <input type="text" id="visitNote" placeholder="Nota visita">
-        <p id="selectedDateLabel">Nessuna data selezionata</p>
-
-        <button onclick="addVisitFromCalendar()">Aggiungi visita</button>
+        <input id="visitNote" placeholder="Nota visita">
+        <button onclick="addVisit()">Aggiungi visita</button>
 
         <div id="visitList"></div>
-
     </div>
 </section>
 
@@ -62,14 +62,8 @@
     <div class="card">
         <h2>📄 Referti</h2>
 
-        <input id="reportInput" placeholder="Nome">
+        <input id="reportName" placeholder="Nome referto">
         <input id="reportDesc" placeholder="Descrizione">
-
-        <select id="reportType">
-            <option>Analisi</option>
-            <option>Visita</option>
-            <option>Radiologia</option>
-        </select>
 
         <button onclick="addReport()">Aggiungi</button>
 
@@ -82,7 +76,7 @@
     <div class="card">
         <h2>💊 Farmaci</h2>
 
-        <input id="medInput" placeholder="Nome">
+        <input id="medName" placeholder="Nome">
         <input id="medDose" placeholder="Dose">
         <input id="medTime" placeholder="Orario">
 
