@@ -4,38 +4,50 @@ let data = {
     meds: []
 };
 
-let currentDate = new Date();
 let chart;
 
 /* NAV */
 function go(page) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
-
-    if (page === "visite") renderCalendar();
 }
 
-/* SAVE */
+/* STORAGE */
 function save() {
-    localStorage.setItem("salutelink", JSON.stringify(data));
+    localStorage.setItem("healthpro", JSON.stringify(data));
 }
 
 function load() {
-    const d = localStorage.getItem("salutelink");
+    const d = localStorage.getItem("healthpro");
     if (d) data = JSON.parse(d);
 }
 
 /* VISITE */
 function addVisit() {
     data.visits.push({
-        date: selectedDate || today(),
-        note: visitNote.value
+        note: visitNote.value,
+        type: visitType.value,
+        time: visitTime.value
     });
 
     visitNote.value = "";
+
     save();
     renderAll();
-    renderCalendar();
+}
+
+/* FARMACI */
+function addMed() {
+    data.meds.push({
+        name: medName.value,
+        dose: medDose.value,
+        time: medTime.value
+    });
+
+    medName.value = "";
+
+    save();
+    renderAll();
 }
 
 /* REFERTI */
@@ -52,74 +64,6 @@ function addReport() {
     renderAll();
 }
 
-/* FARMACI */
-function addMed() {
-    data.meds.push({
-        name: medName.value,
-        dose: medDose.value,
-        time: medTime.value
-    });
-
-    medName.value = "";
-    medDose.value = "";
-    medTime.value = "";
-
-    save();
-    renderAll();
-}
-
-/* DELETE (CRUD) */
-function remove(type, index) {
-    data[type].splice(index, 1);
-    save();
-    renderAll();
-}
-
-/* CALENDAR */
-let selectedDate = null;
-
-function renderCalendar() {
-    const cal = document.getElementById("calendar");
-    const label = document.getElementById("monthLabel");
-
-    const y = currentDate.getFullYear();
-    const m = currentDate.getMonth();
-
-    const first = new Date(y, m, 1).getDay();
-    const days = new Date(y, m + 1, 0).getDate();
-
-    label.innerText = currentDate.toLocaleString("it-IT", {
-        month: "long",
-        year: "numeric"
-    });
-
-    cal.innerHTML = "";
-
-    for (let i = 0; i < first; i++) cal.innerHTML += "<div></div>";
-
-    for (let d = 1; d <= days; d++) {
-        const date = `${y}-${m + 1}-${d}`;
-        const has = data.visits.some(v => v.date === date);
-
-        cal.innerHTML += `
-            <div class="day ${has ? "has" : ""}"
-            onclick="selectedDate='${date}'">
-                ${d}
-            </div>
-        `;
-    }
-}
-
-function nextMonth() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-}
-
-function prevMonth() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-}
-
 /* RENDER */
 function renderAll() {
 
@@ -127,22 +71,22 @@ function renderAll() {
     refertiCount.innerText = data.reports.length;
     farmaciCount.innerText = data.meds.length;
 
-    visitList.innerHTML = data.visits.map((v,i)=>
-        `📅 ${v.date} - ${v.note} <button onclick="remove('visits',${i})">❌</button>`
+    visitList.innerHTML = data.visits.map(v =>
+        `📅 ${v.type} - ${v.time} - ${v.note}`
     ).join("");
 
-    reportList.innerHTML = data.reports.map((r,i)=>
-        `📄 ${r.name} <button onclick="remove('reports',${i})">❌</button>`
+    medList.innerHTML = data.meds.map(m =>
+        `💊 ${m.name} - ${m.dose} - ${m.time}`
     ).join("");
 
-    medList.innerHTML = data.meds.map((m,i)=>
-        `💊 ${m.name} <button onclick="remove('meds',${i})">❌</button>`
+    reportList.innerHTML = data.reports.map(r =>
+        `📄 ${r.name}`
     ).join("");
 
     timeline.innerHTML = [
-        ...data.visits.map(v => `📅 ${v.date}`),
-        ...data.reports.map(r => `📄 ${r.name}`),
-        ...data.meds.map(m => `💊 ${m.name}`)
+        ...data.visits.map(v => `📅 ${v.type} - ${v.time}`),
+        ...data.meds.map(m => `💊 ${m.name}`),
+        ...data.reports.map(r => `📄 ${r.name}`)
     ].map(x => `<div>${x}</div>`).join("");
 
     drawChart();
@@ -168,12 +112,6 @@ function drawChart() {
         chart.data.datasets[0].data = [v,r,m];
         chart.update();
     }
-}
-
-/* UTIL */
-function today() {
-    const d = new Date();
-    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 }
 
 /* INIT */
