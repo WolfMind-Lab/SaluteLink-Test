@@ -17,14 +17,13 @@ function saveProfile() {
 
 /* VISITE */
 function addVisit() {
-    const visitDate = document.getElementById("visitDate").value;
+    const date = document.getElementById("visitDate").value;
+    if (!date) return;
 
-    if (!visitDate) return;
-
-    localStorage.setItem("visit", visitDate);
+    localStorage.setItem("visit", date);
 
     document.getElementById("visitView").innerText =
-        "Visita: " + visitDate;
+        "Visita: " + date;
 
     update();
 }
@@ -60,7 +59,7 @@ function addMed() {
     update();
 }
 
-/* SALVATAGGIO LISTE */
+/* SALVATAGGIO */
 function saveLists() {
     localStorage.setItem("reports", document.getElementById("reportList").innerHTML);
     localStorage.setItem("meds", document.getElementById("medList").innerHTML);
@@ -71,15 +70,15 @@ let chart;
 
 function update() {
 
-    const visits = localStorage.getItem("visit") ? 1 : 0;
-    const reports = document.getElementById("reportList").children.length;
-    const meds = document.getElementById("medList").children.length;
+    const v = localStorage.getItem("visit") ? 1 : 0;
+    const r = document.getElementById("reportList").children.length;
+    const m = document.getElementById("medList").children.length;
 
-    document.getElementById("visiteCount").innerText = visits;
-    document.getElementById("refertiCount").innerText = reports;
-    document.getElementById("farmaciCount").innerText = meds;
+    document.getElementById("visiteCount").innerText = v;
+    document.getElementById("refertiCount").innerText = r;
+    document.getElementById("farmaciCount").innerText = m;
 
-    drawChart(visits, reports, meds);
+    drawChart(v, r, m);
 }
 
 /* GRAFICO */
@@ -108,13 +107,11 @@ function drawChart(v, r, m) {
 /* LOAD */
 window.onload = function () {
 
-    const name = localStorage.getItem("name");
-    const age = localStorage.getItem("age");
-
-    if (name && age) {
-        document.getElementById("profileView").innerText =
-            name + " - " + age + " anni";
-    }
+    document.getElementById("profileView").innerText =
+        (localStorage.getItem("name") || "") +
+        " - " +
+        (localStorage.getItem("age") || "") +
+        " anni";
 
     document.getElementById("visitView").innerText =
         "Visita: " + (localStorage.getItem("visit") || "nessuna");
