@@ -24,6 +24,7 @@
 
 <main>
 
+<!-- DASHBOARD -->
 <section id="home" class="page active">
 
     <div class="card">
@@ -34,23 +35,35 @@
         <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
-            <div>Visite<br><b id="visiteCount">0</b></div>
-            <div>Referti<br><b id="refertiCount">0</b></div>
-            <div>Farmaci<br><b id="farmaciCount">0</b></div>
+            <div>
+                Visite<br><b id="visiteCount">0</b>
+            </div>
+
+            <div>
+                Referti<br><b id="refertiCount">0</b>
+            </div>
+
+            <div>
+                Farmaci<br><b id="farmaciCount">0</b>
+            </div>
         </div>
     </div>
 
 </section>
 
+<!-- VISITE -->
 <section id="visite" class="page">
     <div class="card">
         <h2>📅 Visite</h2>
+
         <input type="date" id="visitDate">
         <button onclick="addVisit()">Aggiungi visita</button>
+
         <p id="visitView"></p>
     </div>
 </section>
 
+<!-- REFERTI -->
 <section id="referti" class="page">
     <div class="card">
         <h2>📄 Referti</h2>
@@ -69,6 +82,7 @@
     </div>
 </section>
 
+<!-- FARMACI -->
 <section id="farmaci" class="page">
     <div class="card">
         <h2>💊 Farmaci</h2>
@@ -82,11 +96,12 @@
 
 </main>
 
+<!-- NAV -->
 <nav>
-    <button onclick="go('home')">Home</button>
-    <button onclick="go('visite')">Visite</button>
-    <button onclick="go('referti')">Referti</button>
-    <button onclick="go('farmaci')">Farmaci</button>
+    <button onclick="go('home')">🏠</button>
+    <button onclick="go('visite')">📅</button>
+    <button onclick="go('referti')">📄</button>
+    <button onclick="go('farmaci')">💊</button>
 </nav>
 
 <script src="app.js"></script>
