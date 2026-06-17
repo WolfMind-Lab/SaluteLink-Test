@@ -2,16 +2,20 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink Pro</title>
+<title>SaluteLink</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Personal Health OS</p>
+    <p>Health Journal Pro</p>
 </header>
 
 <main>
@@ -20,7 +24,9 @@
 <section id="home" class="page active">
 
     <div class="card">
-        <h2>📊 Overview</h2>
+        <h2>📊 Dashboard</h2>
+
+        <canvas id="chart" height="120"></canvas>
 
         <div class="grid">
             <div>Visite<br><b id="visiteCount">0</b></div>
@@ -33,7 +39,7 @@
         <h2>👤 Profilo</h2>
         <input id="name" placeholder="Nome">
         <input id="age" type="number" placeholder="Età">
-        <button onclick="saveProfile()">Salva profilo</button>
+        <button onclick="saveProfile()">Salva</button>
         <p id="profileView"></p>
     </div>
 
@@ -41,23 +47,20 @@
 
 <!-- VISITE -->
 <section id="visite" class="page">
-
     <div class="card">
         <h2>📅 Visite</h2>
         <input type="date" id="visitDate">
         <button onclick="addVisit()">Aggiungi visita</button>
         <p id="visitView"></p>
     </div>
-
 </section>
 
 <!-- REFERTI -->
 <section id="referti" class="page">
-
     <div class="card">
         <h2>📄 Referti</h2>
 
-        <input id="reportInput" placeholder="Nome referto">
+        <input id="reportInput" placeholder="Referto">
 
         <select id="reportType">
             <option>Analisi</option>
@@ -69,12 +72,10 @@
 
         <ul id="reportList"></ul>
     </div>
-
 </section>
 
 <!-- FARMACI -->
 <section id="farmaci" class="page">
-
     <div class="card">
         <h2>💊 Farmaci</h2>
 
@@ -83,12 +84,10 @@
 
         <ul id="medList"></ul>
     </div>
-
 </section>
 
 </main>
 
-<!-- NAV -->
 <nav>
     <button onclick="go('home')">Home</button>
     <button onclick="go('visite')">Visite</button>
