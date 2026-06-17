@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-    background: #f4f6fb;
+    background: #eef2f9;
     color: #111;
 }
 
@@ -45,6 +45,10 @@ button {
     color: white;
 }
 
+button:active {
+    transform: scale(0.97);
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -75,18 +79,4 @@ nav button {
 
 .page.active {
     display: block;
-}
-
-.card h2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.card {
-    transition: transform 0.2s ease;
-}
-
-.card:active {
-    transform: scale(0.98);
 }
