@@ -2,9 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>SaluteLink Pro</title>
+<title>SaluteLink</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,85 +11,62 @@
 
 <header>
     <h1>SaluteLink</h1>
-    <p>Health OS</p>
+    <p>Health Feed</p>
 </header>
 
 <main>
 
-<!-- DASHBOARD -->
+<!-- HOME FEED -->
 <section id="home" class="page active">
-
     <div class="card">
-        <h2>📊 Dashboard</h2>
-
-        <div class="grid">
-            <div class="box">Visite<br><b id="visiteCount">0</b></div>
-            <div class="box">Referti<br><b id="refertiCount">0</b></div>
-            <div class="box">Farmaci<br><b id="farmaciCount">0</b></div>
-        </div>
+        <h2>📌 Oggi</h2>
+        <div id="todayFeed"></div>
     </div>
 
     <div class="card">
-        <h3>📌 Attività recenti</h3>
-        <div id="timeline"></div>
+        <h2>⚡ Prossimi eventi</h2>
+        <div id="upcoming"></div>
+    </div>
+</section>
+
+<!-- ADD -->
+<section id="add" class="page">
+
+    <div class="card">
+        <h2>➕ Aggiungi</h2>
+
+        <select id="type">
+            <option value="visit">Visita</option>
+            <option value="med">Farmaco</option>
+            <option value="report">Referto</option>
+        </select>
+
+        <input id="title" placeholder="Titolo">
+        <input id="desc" placeholder="Dettagli">
+        <input type="date" id="date">
+        <input type="time" id="time">
+
+        <button onclick="addItem()">Salva</button>
     </div>
 
 </section>
 
-<!-- CALENDARIO -->
-<section id="visite" class="page">
+<!-- CALENDAR -->
+<section id="calendar" class="page">
 
     <div class="card">
         <h2>📅 Calendario</h2>
-
-        <div class="calendar-header">
-            <button onclick="prevMonth()">‹</button>
-            <h3 id="monthLabel"></h3>
-            <button onclick="nextMonth()">›</button>
-        </div>
-
-        <div id="calendar"></div>
-
-        <div class="card-inner">
-            <input id="visitNote" placeholder="Nota visita">
-            <input type="time" id="visitTime">
-            <button onclick="addVisit()">Aggiungi visita</button>
-        </div>
-
-        <div id="visitList"></div>
+        <div id="calendarGrid"></div>
     </div>
 
 </section>
 
-<!-- REFERTI -->
-<section id="referti" class="page">
+<!-- ARCHIVE -->
+<section id="archive" class="page">
 
     <div class="card">
-        <h2>📄 Referti</h2>
-
-        <input id="reportName" placeholder="Nome referto">
-        <textarea id="reportDesc" placeholder="Descrizione"></textarea>
-
-        <button onclick="addReport()">Aggiungi</button>
-
-        <div id="reportList"></div>
-    </div>
-
-</section>
-
-<!-- FARMACI -->
-<section id="farmaci" class="page">
-
-    <div class="card">
-        <h2>💊 Farmaci</h2>
-
-        <input id="medName" placeholder="Farmaco">
-        <input id="medDose" placeholder="Dose">
-        <input type="time" id="medTime">
-
-        <button onclick="addMed()">Aggiungi</button>
-
-        <div id="medList"></div>
+        <h2>📁 Archivio</h2>
+        <div id="archiveList"></div>
     </div>
 
 </section>
@@ -99,9 +75,9 @@
 
 <nav>
     <button onclick="go('home')">🏠</button>
-    <button onclick="go('visite')">📅</button>
-    <button onclick="go('referti')">📄</button>
-    <button onclick="go('farmaci')">💊</button>
+    <button onclick="go('add')">➕</button>
+    <button onclick="go('calendar')">📅</button>
+    <button onclick="go('archive')">📁</button>
 </nav>
 
 <script src="app.js"></script>
