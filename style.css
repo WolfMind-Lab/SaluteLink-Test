@@ -1,7 +1,8 @@
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
     background: #f4f6fb;
+    color: #111;
 }
 
 header {
@@ -9,6 +10,11 @@ header {
     padding: 20px;
     background: linear-gradient(135deg, #2c7be5, #1b5fd0);
     color: white;
+}
+
+header p {
+    opacity: 0.8;
+    margin-top: 5px;
 }
 
 main {
@@ -34,6 +40,11 @@ input, select {
     border: 1px solid #ddd;
 }
 
+input:focus, select:focus {
+    outline: none;
+    border-color: #2c7be5;
+}
+
 button {
     width: 100%;
     padding: 12px;
@@ -42,6 +53,11 @@ button {
     border-radius: 10px;
     background: #2c7be5;
     color: white;
+    font-weight: 600;
+}
+
+button:active {
+    transform: scale(0.98);
 }
 
 .grid {
@@ -49,6 +65,7 @@ button {
     grid-template-columns: repeat(3, 1fr);
     text-align: center;
     margin-top: 10px;
+    gap: 8px;
 }
 
 nav {
@@ -66,7 +83,13 @@ nav button {
     background: none;
     color: #2c7be5;
     padding: 14px;
+    border-radius: 0;
 }
 
-.page { display: none; }
-.page.active { display: block; }
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
