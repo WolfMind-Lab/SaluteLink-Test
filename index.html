@@ -18,8 +18,10 @@
 
     <!-- DASHBOARD -->
     <section id="home" class="page active">
+
         <div class="card">
             <h2>Dashboard</h2>
+
             <div class="grid">
                 <div>📅 Visite<br><span id="countVisits">0</span></div>
                 <div>📄 Referti<br><span id="countReports">0</span></div>
@@ -34,22 +36,29 @@
             <button onclick="saveProfile()">Salva</button>
             <p id="profileView"></p>
         </div>
+
     </section>
 
     <!-- VISITE -->
     <section id="visite" class="page">
+
         <div class="card">
             <h2>Visite mediche</h2>
+
             <input type="date" id="visitDate">
             <button onclick="addVisit()">Aggiungi visita</button>
+
             <p id="visitView"></p>
         </div>
+
     </section>
 
     <!-- REFERTI -->
     <section id="referti" class="page">
+
         <div class="card">
             <h2>Referti</h2>
+
             <input id="reportInput" placeholder="Nome referto">
 
             <select id="reportType">
@@ -62,16 +71,21 @@
 
             <ul id="reportList"></ul>
         </div>
+
     </section>
 
     <!-- FARMACI -->
     <section id="farmaci" class="page">
+
         <div class="card">
             <h2>Farmaci</h2>
+
             <input id="medInput" placeholder="Nome farmaco">
             <button onclick="addMed()">Aggiungi</button>
+
             <ul id="medList"></ul>
         </div>
+
     </section>
 
 </main>
@@ -85,7 +99,6 @@
 </nav>
 
 <script src="app.js"></script>
+
 </body>
 </html>
-
-<!-- sync fix -->
